@@ -116,8 +116,8 @@ const styles = {
   },
   card: {
     width: "100%",
-    maxWidth: "468px",
-    minHeight: "702px",
+    maxWidth: "574px",
+    minHeight: "756px",
     padding: "40px",
     boxSizing: "border-box",
     backgroundColor: "#ffffff",
