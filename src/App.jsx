@@ -1,9 +1,9 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, useNavigate, useParams } from "react-router-dom";
 import logo from "./assets/logo.png";
-import TeacherFrontPage from "./TeacherFrontPage";
+import TeacherAddCard from "./TeacherAddCard";
 
-// HomePage pysyy ennallaan
+// Etusivu
 function HomePage() {
   const navigate = useNavigate();
 
@@ -11,19 +11,16 @@ function HomePage() {
     <div style={styles.app}>
       <div style={styles.card}>
         <img src={logo} alt="Logo" style={styles.logo} />
-        <div style={styles.textContainer}>
+        <div>
           <h1 style={styles.appName}>DigiDens</h1>
           <p style={styles.subtitle}>
-            Helsingin Yliopiston<br /> Hammaslääketieteen oppimisympäristö
+            Helsingin Yliopiston<br />Hammaslääketieteen oppimisympäristö
           </p>
         </div>
 
         <div style={styles.bottomContainer}>
           <div style={styles.buttonContainer}>
-            <button
-              style={styles.button}
-              onClick={() => navigate("/teacher")}
-            >
+            <button style={styles.button} onClick={() => navigate("/teacher")}>
               Kirjaudu Sisään Opettajana
             </button>
             <button style={styles.button}>Kirjaudu Sisään Opiskelijana</button>
@@ -35,7 +32,7 @@ function HomePage() {
   );
 }
 
-// Kurssilistausopettajalle
+// Opettajan kurssivalikkosivu
 function TeacherCoursesPage() {
   const navigate = useNavigate();
   const courses = ["Kurssi 1", "Kurssi 2", "Kurssi 3"];
@@ -43,45 +40,52 @@ function TeacherCoursesPage() {
   return (
     <div style={styles.app}>
       <div style={styles.card}>
-        <h1 style={styles.appName}>Valitse kurssi</h1>
-        <p style={styles.subtitle}>Klikkaa kurssia jatkaaksesi tehtävien hallintaan</p>
-        <ul style={styles.courseList}>
-          {courses.map((course, index) => (
-            <li key={index} style={styles.courseItem}>
-              <button
-                style={styles.courseButton}
-                onClick={() => navigate(`/teacher/${course}`)}
-              >
-                {course}
-              </button>
-            </li>
-          ))}
-        </ul>
+        <img src={logo} alt="Logo" style={styles.logo} />
+  <button style={styles.backButton} onClick={() => navigate("/")}>
+            ← Takaisin etusivulle
+          </button>
+        <div>
+          <h1 style={styles.appNameMini}>DigiDens</h1>
+          <p style={styles.subtitle}>
+            Tervetuloa opettajan kurssinäkymään! <br />
+          </p>
+        
+          <h2 style={styles.pageTitle}>Kurssivalikko</h2>
+          <p style={styles.subtitle2}>
+            Valitse kurssi jatkaaksesi tehtävien hallintaan
+          </p>
+        </div>
+
+        <div style={styles.courseContainer}>
+          <ul style={styles.courseList}>
+            {courses.map((course, index) => (
+              <li key={index} style={styles.courseItem}>
+                <button
+                  style={styles.courseButton}
+                  onClick={() => navigate(`/teacher/${course}`)}
+                >
+                  {course}
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <p style={styles.alatunniste}>Helsingin Yliopisto</p>
       </div>
     </div>
   );
 }
 
-// TeacherFrontPage Wrapper, mutta ilman maxWidth/padding ongelmaa
-function TeacherFrontPageWrapper() {
+// TeacherAddCard wrapper
+function TeacherAddCardWrapper() {
   const { courseName } = useParams();
   const navigate = useNavigate();
 
   return (
-    <div style={styles.fullScreen}>
-      {/* Header */}
-      <div style={styles.header}>
-        <button style={styles.backButton} onClick={() => navigate("/teacher")}>
-          ← Takaisin kursseille
-        </button>
-        <span style={styles.courseTitle}>{courseName}</span>
-      </div>
-
-      {/* TeacherFrontPage keskitettynä */}
-      <div style={styles.centerContent}>
-        <TeacherFrontPage />
-      </div>
-    </div>
+    <TeacherAddCard
+      courseName={courseName}
+      navigateBack={() => navigate("/teacher")}
+    />
   );
 }
 
@@ -92,13 +96,13 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/teacher" element={<TeacherCoursesPage />} />
-        <Route path="/teacher/:courseName" element={<TeacherFrontPageWrapper />} />
+        <Route path="/teacher/:courseName" element={<TeacherAddCardWrapper />} />
       </Routes>
     </Router>
   );
 }
 
-// Tyylit yhdistetty
+
 const styles = {
   app: {
     minHeight: "100vh",
@@ -107,13 +111,13 @@ const styles = {
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#dcdcdc",
-    padding: "40px",
+    padding: "20px",
     boxSizing: "border-box",
   },
   card: {
     width: "100%",
-    maxWidth: "500px",
-    minHeight: "800px",
+    maxWidth: "820px",
+    minHeight: "1180px",
     padding: "40px",
     boxSizing: "border-box",
     backgroundColor: "#ffffff",
@@ -126,34 +130,70 @@ const styles = {
   logo: {
     width: "50px",
     height: "auto",
-    alignSelf: "flex-start",
-    marginBottom: "10px",
+    marginBottom: "1px", // yhdenmukaistettu
   },
   appName: {
     fontSize: "clamp(22px, 4vw, 36px)",
     fontWeight: "500",
     marginBottom: "2px",
-    textTransform: "none",
-    color: "#000000",
+  },
+  appNameMini: {
+    fontSize: "clamp(18px, 4vw, 1px)",
+    fontWeight: "500",
+    marginTop: "0px", // yhdenmukaistettu
+    marginBottom: "2px",
+  },
+  pageTitle: {
+    fontSize: "clamp(20px, 3vw, 26px)",
+    fontWeight: "500",
+    marginBottom: "1px",
+    marginTop: "100px",
   },
   subtitle: {
-    fontSize: "clamp(16px, 2.5vw, 15px)",
+    fontSize: "16px",
     color: "#5C5C5C",
-    lineHeight: "1.1",
-    marginTop: "0px",
+    lineHeight: "1.2",
   },
-  bottomContainer: {
-    width: "100%",
+  subtitle2: {
+    fontSize: "18px",
+    color: "#000000ff",
+    lineHeight: "1.2",
+  },
+  courseContainer: {
+    marginTop: "20px",
+    overflowY: "auto",
+    maxHeight: "520px",
     display: "flex",
     flexDirection: "column",
-    alignItems: "center",
-  },
-  buttonContainer: {
-    display: "flex",
-    flexDirection: "column",
+    justifyContent: "flex-start",
+    alignItems: "stretch",
     gap: "15px",
-    width: "100%",
+    flexGrow: 1,
+  },
+  courseList: {
+    listStyle: "none",
+    padding: 0,
+    display: "flex",
+    flexDirection: "column",
+    gap: "10px",
     alignItems: "center",
+    marginTop: "20px",
+  },
+  courseButton: {
+    padding: "12px 20px",
+    fontSize: "16px",
+    borderRadius: "10px",
+    border: "1px solid #48A39B",
+    backgroundColor: "#48A39B",
+    color: "#fff",
+    cursor: "pointer",
+    width: "100%",
+  },
+  alatunniste: {
+    textAlign: "center",
+    marginTop: "25px",
+    fontSize: "17px",
+    color: "#5C5C5C",
   },
   button: {
     padding: "15px 20px",
@@ -166,31 +206,18 @@ const styles = {
     fontSize: "clamp(14px, 2.5vw, 18px)",
     fontWeight: "400",
   },
-  alatunniste: {
-    textAlign: "center",
-    marginTop: "25px",
-    fontSize: "17px",
-    color: "#5C5C5C",
-  },
-  courseList: {
-    listStyle: "none",
-    padding: 0,
+  buttonContainer: {
     display: "flex",
     flexDirection: "column",
-    gap: "10px",
-    alignItems: "center",
-    marginTop: "20px",
-  },
-  courseItem: {},
-  courseButton: {
-    padding: "12px 20px",
-    fontSize: "16px",
-    borderRadius: "10px",
-    border: "1px solid #48A39B",
-    backgroundColor: "#48A39B",
-    color: "#fff",
-    cursor: "pointer",
+    gap: "15px",
     width: "100%",
+    alignItems: "center",
+  },
+  bottomContainer: {
+    width: "100%",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
   },
   backButton: {
     padding: "8px 16px",
@@ -200,29 +227,9 @@ const styles = {
     backgroundColor: "#fff",
     color: "#000",
     cursor: "pointer",
-    marginRight: "10px",
-  },
-  fullScreen: {
-    width: "100vw",
-    height: "100vh",
-    backgroundColor: "#dcdcdc",
-    display: "flex",
-    flexDirection: "column",
-    padding: "20px",
-    boxSizing: "border-box",
-  },
-  header: {
-    display: "flex",
-    alignItems: "center",
-    gap: "10px",
-    marginBottom: "20px",
-  },
-  courseTitle: { fontSize: "20px", fontWeight: "500" },
-  centerContent: {
-    flex: 1,
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
+    maxWidth: "120px",
+    marginTop: "5px",
+    marginBottom: "10px"
   },
 };
 

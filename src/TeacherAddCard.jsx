@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 import logo from "./assets/logo.png";
 
-function TeacherFrontPage() {
+function TeacherAddCard({ courseName, navigateBack }) {
   const [cards, setCards] = useState([]);
   const [newCardName, setNewCardName] = useState("");
 
   const addCard = () => {
     if (!newCardName.trim()) return;
-    setCards([
-      ...cards,
-      { name: newCardName, columns: [], newColumnName: "", rows: [] }
+    setCards(prev => [
+      { name: newCardName, columns: [], newColumnName: "", rows: [] },
+      ...prev
     ]);
     setNewCardName("");
   };
@@ -29,6 +29,7 @@ function TeacherFrontPage() {
       name: colName,
       type: "text",
       options: [],
+      optionsRaw: "",
       responder: "student"
     });
 
@@ -90,9 +91,15 @@ function TeacherFrontPage() {
 
     newCards[cardIndex].rows = newCards[cardIndex].rows.map(row => {
       const oldVal = row[newCards[cardIndex].columns[colIndex].name];
-      if (value === "checkbox" && typeof oldVal !== "boolean") row[newCards[cardIndex].columns[colIndex].name] = false;
-      if (value === "radio") row[newCards[cardIndex].columns[colIndex].name] = "";
-      if (value !== "checkbox" && value !== "radio" && typeof oldVal === "boolean") row[newCards[cardIndex].columns[colIndex].name] = "";
+      if (value === "checkbox" && typeof oldVal !== "boolean")
+        newCards[cardIndex].rows.forEach(r => r[newCards[cardIndex].columns[colIndex].name] = false);
+      if (value === "radio")
+        newCards[cardIndex].rows.forEach(r => r[newCards[cardIndex].columns[colIndex].name] = "");
+      if (value !== "checkbox" && value !== "radio")
+        newCards[cardIndex].rows.forEach(r => {
+          if (typeof r[newCards[cardIndex].columns[colIndex].name] === "boolean")
+            r[newCards[cardIndex].columns[colIndex].name] = "";
+        });
       return row;
     });
 
@@ -101,7 +108,8 @@ function TeacherFrontPage() {
 
   const handleColumnOptionsChange = (cardIndex, colIndex, value) => {
     const newCards = [...cards];
-    newCards[cardIndex].columns[colIndex].options = value.split(",").map(opt => opt.trim());
+    newCards[cardIndex].columns[colIndex].optionsRaw = value;
+    newCards[cardIndex].columns[colIndex].options = value.split(",");
     setCards(newCards);
   };
 
@@ -120,11 +128,26 @@ function TeacherFrontPage() {
   return (
     <div style={styles.app}>
       <div style={styles.card}>
-        <img src={logo} alt="Logo" style={styles.logo} />
+      <img src={logo} alt="Logo" style={styles.logo} />
+    <button style={styles.backButton} onClick={navigateBack}>
+            ← Takaisin kursseille
+          </button>
+
         <div>
-          <h1 style={styles.appName}>DigiDens</h1>
-          <p style={styles.subtitle}>
-            Tervetuloa opettajan näkymään!<br /> Luo ja hallinnoi tehtäväkortteja.
+          <h1 style={styles.appNameMini}>DigiDens</h1>
+              <p style={styles.subtitle}>
+            Tervetuloa opettajan suoritekorttinäkymään! <br />
+          </p>
+          <div style={styles.header}>
+      
+       
+        </div>
+          <h2 style={styles.pageTitle}>Suoritekortit</h2>
+             <div style={styles.header}>
+          {courseName && <span style={styles.courseNameHeader}>{courseName}</span>}
+        </div>
+          <p style={styles.subtitle2}>
+            Luo ja hallinnoi tehtäväkortteja.
           </p>
         </div>
 
@@ -137,7 +160,9 @@ function TeacherFrontPage() {
             style={styles.input}
           />
           <button style={styles.button} onClick={addCard}>Luo uusi kortti</button>
+        </div>
 
+        <div style={styles.cardsContainer}>
           {cards.map((card, ci) => (
             <div key={ci} style={styles.cardItem}>
               <div style={styles.cardHeader}>
@@ -191,7 +216,7 @@ function TeacherFrontPage() {
                                 <input
                                   type="text"
                                   placeholder="Pilkuilla erotettuna"
-                                  value={col.options?.join(", ") || ""}
+                                  value={col.optionsRaw ?? ""}
                                   onChange={(e) => handleColumnOptionsChange(ci, colIndex, e.target.value)}
                                   style={styles.columnInput}
                                 />
@@ -223,7 +248,7 @@ function TeacherFrontPage() {
                                   onChange={(e) => handleCellChange(ci, ri, col.name, e.target.checked)}
                                   style={styles.cellInputCheckbox}
                                 />
-                              ) : col.type === "radio" && col.responder === "student" ? (
+                              ) : col.type === "radio" ? (
                                 <div>
                                   {col.options?.map((opt, idx) => (
                                     <label key={idx} style={{ display: "block" }}>
@@ -268,31 +293,215 @@ function TeacherFrontPage() {
 }
 
 const styles = {
-  app: { minHeight: "100vh", width: "100vw", display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "#dcdcdc", padding: "20px", boxSizing: "border-box" },
-  card: { width: "100%", maxWidth: "900px", padding: "30px", backgroundColor: "#fff", borderRadius: "10px", boxShadow: "0 4px 10px rgba(0,0,0,0.1)", display: "flex", flexDirection: "column", gap: "20px" },
-  logo: { width: "50px", height: "auto", marginBottom: "10px" },
-  appName: { fontSize: "clamp(22px, 4vw, 36px)", fontWeight: "500", marginBottom: "2px" },
-  subtitle: { fontSize: "16px", color: "#5C5C5C", lineHeight: "1.1" },
-  taskContainer: { display: "flex", flexDirection: "column", gap: "15px" },
-  input: { padding: "10px", fontSize: "16px", borderRadius: "8px", border: "1px solid #ccc", width: "100%", boxSizing: "border-box" },
-  button: { padding: "12px 20px", backgroundColor: "#48A39B", color: "#fff", border: "none", borderRadius: "25px", cursor: "pointer", fontSize: "16px", fontWeight: "500", width: "100%" },
-  smallButton: { padding: "8px 15px", backgroundColor: "#48A39B", color: "#fff", border: "none", borderRadius: "15px", cursor: "pointer", fontSize: "14px" },
-  deleteButton: { padding: "5px 10px", backgroundColor: "#000", color: "#fff", border: "1px solid #000", borderRadius: "10px", cursor: "pointer", fontSize: "14px" },
-  deleteButtonSmall: { padding: "3px 6px", backgroundColor: "#fff", color: "#000", border: "1px solid #000", borderRadius: "5px", cursor: "pointer", fontSize: "12px", marginLeft: "5px" },
-  cardItem: { border: "1px solid #ccc", padding: "15px", borderRadius: "10px", backgroundColor: "#f9f9f9", marginBottom: "20px" },
-  cardHeader: { display: "flex", justifyContent: "space-between", alignItems: "center" },
-  columnRow: { display: "flex", gap: "10px", marginBottom: "10px", flexWrap: "wrap", alignItems: "center" },
-  table: { width: "100%", borderCollapse: "collapse", marginTop: "10px" },
-  tableHeader: { border: "1px solid #ccc", padding: "5px", verticalAlign: "top", minWidth: "150px" },
-  columnInput: { width: "100%", padding: "5px", borderRadius: "5px", border: "1px solid #ccc", marginBottom: "5px", boxSizing: "border-box" },
-  selectInput: { padding: "4px", borderRadius: "5px", border: "1px solid #ccc", marginBottom: "5px", width: "100%", boxSizing: "border-box" },
-  cellTd: { border: "1px solid #ccc", padding: "3px" },
-  cellInput: { width: "100%", padding: "5px", borderRadius: "5px", border: "1px solid #ccc", boxSizing: "border-box" },
-  cellInputCheckbox: { display: "block", margin: "0 auto", width: "20px", height: "20px" },
-  alatunniste: { textAlign: "center", marginTop: "20px", fontSize: "17px", color: "#5C5C5C" },
+  app: {
+    minHeight: "100vh",
+    width: "100vw",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#dcdcdc",
+    padding: "20px",
+    boxSizing: "border-box",
+  },
+  card: {
+    width: "100%",
+    maxWidth: "820px",
+    minHeight: "1180px",
+    padding: "40px",
+    boxSizing: "border-box",
+    backgroundColor: "#ffffff",
+    borderRadius: "10px",
+    boxShadow: "0 4px 10px rgba(0,0,0,0.1)",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-between",
+  },
+  logo: {
+    width: "50px",
+    height: "auto",
+    marginBottom: "1px",
+  },
+  appNameMini: {
+    fontSize: "clamp(18px, 4vw, 1px)",
+    fontWeight: "500",
+    marginBottom: "2px",
+    marginTop: "22px"
+  },
+  pageTitle: {
+    fontSize: "clamp(20px, 3vw, 26px)",
+    fontWeight: "500",
+    marginBottom: "1px",
+    marginTop: "70px",
+  },
+  subtitle2: {
+    fontSize: "18px",
+    color: "#000000ff",
+    lineHeight: "1.2",
+  },
+
+    subtitle: {
+    fontSize: "16px",
+    color: "#5C5C5C",
+    lineHeight: "1.2",
+  },
+  taskContainer: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "15px",
+    flexGrow: 0,
+    flexShrink: 0,
+    overflowY: "visible",
+  },
+  cardsContainer: {
+    marginTop: "20px",
+    overflowY: "auto",
+    maxHeight: "520px",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "flex-start",
+    alignItems: "stretch",
+    gap: "15px",
+    flexGrow: 1,
+  },
+  input: {
+    padding: "10px",
+    fontSize: "16px",
+    borderRadius: "8px",
+    border: "1px solid #ccc",
+    width: "100%",
+    boxSizing: "border-box",
+  },
+  button: {
+    padding: "12px 20px",
+    backgroundColor: "#48A39B",
+    color: "#fff",
+    border: "none",
+    borderRadius: "25px",
+    cursor: "pointer",
+    fontSize: "16px",
+    fontWeight: "500",
+    width: "100%",
+  },
+  smallButton: {
+    padding: "8px 15px",
+    backgroundColor: "#48A39B",
+    color: "#fff",
+    border: "none",
+    borderRadius: "15px",
+    cursor: "pointer",
+    fontSize: "14px",
+  },
+  deleteButton: {
+    padding: "5px 10px",
+    backgroundColor: "#000",
+    color: "#fff",
+    border: "1px solid #000",
+    borderRadius: "10px",
+    cursor: "pointer",
+    fontSize: "14px",
+  },
+  deleteButtonSmall: {
+    padding: "3px 6px",
+    backgroundColor: "#fff",
+    color: "#000",
+    border: "1px solid #000",
+    borderRadius: "5px",
+    cursor: "pointer",
+    fontSize: "12px",
+    marginLeft: "5px",
+  },
+  cardItem: {
+    border: "1px solid #ccc",
+    padding: "15px",
+    borderRadius: "10px",
+    backgroundColor: "#f9f9f9",
+    marginBottom: "20px",
+  },
+  cardHeader: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  columnRow: {
+    display: "flex",
+    gap: "10px",
+    marginBottom: "10px",
+    flexWrap: "wrap",
+    alignItems: "center",
+  },
+  table: {
+    width: "100%",
+    borderCollapse: "collapse",
+    marginTop: "10px",
+  },
+  tableHeader: {
+    border: "1px solid #ccc",
+    padding: "5px",
+    verticalAlign: "top",
+    minWidth: "150px",
+  },
+  columnInput: {
+    width: "100%",
+    padding: "5px",
+    borderRadius: "5px",
+    border: "1px solid #ccc",
+    marginBottom: "5px",
+    boxSizing: "border-box",
+  },
+  selectInput: {
+    padding: "4px",
+    borderRadius: "5px",
+    border: "1px solid #ccc",
+    marginBottom: "5px",
+    width: "100%",
+    boxSizing: "border-box",
+  },
+  cellTd: {
+    border: "1px solid #ccc",
+    padding: "3px",
+  },
+  cellInput: {
+    width: "100%",
+    padding: "5px",
+    borderRadius: "5px",
+    border: "1px solid #ccc",
+    boxSizing: "border-box",
+  },
+  cellInputCheckbox: {
+    display: "block",
+    margin: "0 auto",
+    width: "20px",
+    height: "20px",
+  },
+  alatunniste: {
+    textAlign: "center",
+    marginTop: "20px",
+    fontSize: "17px",
+    color: "#5C5C5C",
+  },
+  header: {
+    display: "flex",
+    alignItems: "center",
+    gap: "10px",
+    marginBottom: "40px",
+  },
+  backButton: {
+    padding: "8px 16px",
+    fontSize: "14px",
+    borderRadius: "8px",
+    border: "1px solid #000",
+    backgroundColor: "#fff",
+    color: "#000",
+    cursor: "pointer",
+    maxWidth: "120px",
+    marginTop: "30px",
+    marginBottom: "20px"
+  },
+  courseNameHeader: {
+    fontSize: "20px",
+    fontWeight: "500",
+  },
 };
 
 
-
-
-export default TeacherFrontPage;
+export default TeacherAddCard;
