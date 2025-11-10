@@ -159,7 +159,7 @@ function TeacherAddCard({ courseName, navigateBack }) {
               onChange={(e) => setNewCardName(e.target.value)}
               style={styles.input}
             />
-            <button style={styles.button} onClick={addCard}>Luo uusi kortti</button>
+            <button style={styles.button} onClick={addCard}>Luo uusi suoritekortti</button>
           </div>
 
           <div style={styles.cardsContainer}>
