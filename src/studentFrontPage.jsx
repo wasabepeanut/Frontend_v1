@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from "react"; 
 import { opiskelijat } from "./mockData/opiskelijat";
 import { kurssit } from "./mockData/kurssit";
 import { kurssiOsallistuminen } from "./mockData/osallistuminenKurssille";
@@ -45,6 +45,10 @@ export default function StudentFrontPage({ opiskelijaId = 1 }) {
             <div style={styles.headerRow}>
               <img src={logo} alt="Logo" style={styles.logo} />
               <div style={styles.topRight}>
+                {/* Uusi opiskelijan tiedot näkyviin */}
+                <div style={styles.studentInfo}>
+                  {opiskelija.etunimi} {opiskelija.sukunimi} {opiskelija.opiskelijanumero} 
+                </div>
                 <span style={styles.filter}>Suodata: Kaikki</span>
                 <span style={styles.hamburger}>☰</span>
               </div>
@@ -129,7 +133,7 @@ const styles = {
     flexDirection: "column",
     justifyContent: "space-between",
   },
-   header: {
+  header: {
     padding: "30px 40px 20px 30px",
   },
   divider: {
@@ -163,6 +167,11 @@ const styles = {
     gap: "15px",
     fontSize: "14px",
     color: "#333",
+  },
+  studentInfo: {
+    fontWeight: "600",
+    display: "flex",
+    
   },
   filter: {},
   hamburger: { cursor: "pointer", fontSize: "18px" },
