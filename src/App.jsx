@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route, useNavigate, useParams } from "react-router-dom";
 import logo from "./assets/logo.png";
 import TeacherAddCard from "./TeacherAddCard";
+import StudentFrontPage from "./studentFrontPage";
 
 //  Yhteinen "Card" rakenne 
 function LayoutCard({ header, children, footer }) {
@@ -38,12 +39,17 @@ function HomePage() {
           <button style={styles.button} onClick={() => navigate("/teacher")}>
             Kirjaudu Sisään Opettajana
           </button>
-          <button style={styles.button}>Kirjaudu Sisään Opiskelijana</button>
+         <button style={styles.button} onClick={() => navigate("/student")}>
+  Kirjaudu Sisään Opiskelijana
+</button>
         </div>
       </LayoutCard>
     </div>
   );
 }
+// Voidaan käyttää kun on kirjautumistoiminto:
+//<Route path="/student/:id" element={<StudentFrontPage />} />
+//onClick={() => navigate("/student/1")}
 
 //  Opettajan kurssinäkymä
 function TeacherCoursesPage() {
@@ -117,6 +123,7 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/teacher" element={<TeacherCoursesPage />} />
         <Route path="/teacher/:courseName" element={<TeacherAddCardWrapper />} />
+        <Route path="/student" element={<StudentFrontPage />} />
       </Routes>
     </Router>
   );
@@ -139,7 +146,7 @@ const styles = {
     maxWidth: "90vw",
     minHeight: "820px",
     backgroundColor: "#fff",
-    borderRadius: "10px",
+    borderRadius: "30px",
     boxShadow: "0 4px 10px rgba(0,0,0,0.1)",
     display: "flex",
     flexDirection: "column",

@@ -312,7 +312,7 @@ const styles = {
     maxWidth: "90vw",
     minHeight: "820px",
     backgroundColor: "#ffffff",
-    borderRadius: "10px",
+    borderRadius: "30px",
     boxShadow: "0 4px 10px rgba(0,0,0,0.1)",
     display: "flex",
     flexDirection: "column",
