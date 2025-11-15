@@ -1,7 +1,10 @@
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import LayoutCard from "../components/LayoutCard";
 import logo from "../assets/logo.png";
+import { vuosikurssit } from "../mockData/vuosikurssit";
 import { styles } from "../styles/commonStyles";
+
 
 function TeacherYearsPage() {
   const navigate = useNavigate();
@@ -16,25 +19,25 @@ function TeacherYearsPage() {
         }
         footer={<p style={styles.alatunniste}>@Helsingin Yliopisto</p>}
       >
-        <button style={styles.backButton} onClick={() => navigate("/")}>
-          ← Taka
+        <button style={styles.backButton} onClick={() => navigate(-1)}>
+          ← Takaisin
         </button>
 
         <h1 style={styles.appNameMini}>DigiDens</h1>
-        <p style={styles.subtitle}>Tervetuloa opettajan kurssinäkymään!</p>
+        <p style={styles.subtitle}>Tervetuloa opettajan vuosinäkymään!</p>
 
-        <h2 style={styles.pageTitle}>Kurssivalikko</h2>
-        <p style={styles.subtitle2}>Valitse kurssi jatkaaksesi tehtävien hallintaan</p>
+        <h2 style={styles.pageTitle}>Vuosivalikko</h2>
+        <p style={styles.subtitle2}>Valitse vuosi jatkaaksesi tehtävien hallintaan</p>
 
-        <div style={styles.courseContainer}>
-          <ul style={styles.courseList}>
-            {kurssit.map((course) => (
-              <li key={course.id} style={styles.courseItem}>
+        <div style={styles.listContainer}>
+          <ul style={styles.listItems}>
+            {vuosikurssit.map((year) => (
+              <li key={year.id} style={styles.listItem}>
                 <button
-                  style={styles.courseButton}
-                  onClick={() => navigate(`/teacher/${year}`)}
+                  style={styles.primaryButton}
+                  onClick={() => navigate(`/teacherYears/${year.id}`)}
                 >
-                  {course.kurssitunnus} — {course.nimi}
+                  {year.nimi}
                 </button>
               </li>
             ))}

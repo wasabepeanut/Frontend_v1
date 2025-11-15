@@ -64,7 +64,7 @@ export default function StudentFrontPage({ opiskelijaId = 1 }) {
         </div>
 
         {/* Kurssit isona painikkeena */}
-        <div style={styles.courseContainer}>
+        <div style={styles.itemContainer}>
           {kurssitOppilaalle.map((k) => {
             const edistyminen = Math.floor(
               (k.tehtavatValmiina / k.tehtavatYhteensa) * 100
@@ -72,7 +72,7 @@ export default function StudentFrontPage({ opiskelijaId = 1 }) {
             return (
               <button
                 key={k.id}
-                style={styles.courseButton}
+                style={styles.itemButton}
                 onClick={() =>
                   alert(`Siirryt suoritekortille: ${k.nimi}`)
                 }

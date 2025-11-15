@@ -30,12 +30,12 @@ function TeacherCoursesPage() {
         <h2 style={styles.pageTitle}>Kurssivalikko</h2>
         <p style={styles.subtitle2}>Valitse kurssi jatkaaksesi tehtävien hallintaan</p>
 
-        <div style={styles.courseContainer}>
-          <ul style={styles.courseList}>
+        <div style={styles.listContainer}>
+          <ul style={styles.listItems}>
             {kurssit.map((course) => (
-              <li key={course.id} style={styles.courseItem}>
+              <li key={course.id} style={styles.listItem}>
                 <button
-                  style={styles.courseButton}
+                  style={styles.primaryButton}
                   onClick={() => navigate(`/teacherCourses/${course.kurssitunnus}`)}
                 >
                   {course.kurssitunnus} — {course.nimi}

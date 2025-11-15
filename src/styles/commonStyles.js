@@ -71,7 +71,7 @@ export const styles = {
     marginTop: "40px",
     lineHeight: "1"
   },
-  courseContainer: {
+  listContainer: {
     marginTop: "20px",
     overflowY: "auto",
     display: "flex",
@@ -79,7 +79,7 @@ export const styles = {
     gap: "15px",
     flexGrow: 1,
   },
-  courseList: {
+  listItems: {
     listStyle: "none",
     padding: 0,
     margin: 0,
@@ -88,8 +88,8 @@ export const styles = {
     gap: "10px",
   },
   // Safe default for list items if referenced
-  courseItem: {},
-  courseButton: {
+  listItem: {},
+  primaryButton: {
     padding: "12px 20px",
     fontSize: "16px",
     borderRadius: "0px",
@@ -179,12 +179,12 @@ export const studentFrontStyles = {
     backgroundColor: "#f7f7f7",
     cursor: "pointer",
   },
-  courseContainer: {
+  itemContainer: {
     display: "flex",
     flexDirection: "column",
     gap: "12px",
   },
-  courseButton: {
+  itemButton: {
     display: "flex",
     flexDirection: "column",
     alignItems: "stretch",
