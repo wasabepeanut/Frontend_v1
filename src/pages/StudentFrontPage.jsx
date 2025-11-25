@@ -64,28 +64,29 @@ export default function StudentFrontPage({ opiskelijaId = 1 }) {
         </div>
 
         {/* Kurssit isona painikkeena */}
+      
         <div style={styles.itemContainer}>
           {kurssitOppilaalle.map((k) => {
             const edistyminen = Math.floor(
               (k.tehtavatValmiina / k.tehtavatYhteensa) * 100
             );
             return (
-              <button
+              <ds-card
                 key={k.id}
-                style={styles.itemButton}
                 onClick={() =>
                   alert(`Siirryt suoritekortille: ${k.nimi}`)
                 }
+
+  ds-heading={k.kurssitunnus || ""} 
+  ds-eyebrow={k.nimi} 
+  ds-url="#" // nuoli symboli tulee tällä
+  ds-subtitle={`Edistyminen ${k.tehtavatValmiina || 0}/${k.tehtavatYhteensa || 0}`}
+  ds-tag="Kurssi"
+  ds-horizontal="false"
               >
-                <div style={styles.courseInfo}>
-                  <div style={styles.courseTexts}>
-                    <h3 style={styles.courseTextsCode}>{k.tunnus || k.kurssitunnus}</h3>
-                    <p style={styles.courseTextsCode}>{k.nimi}</p>
-                    <p style={styles.courseTextsProgress}>Edistyminen {k.tehtavatValmiina}/{k.tehtavatYhteensa}</p>
-                  </div>
-                  <div style={styles.arrow}>→</div>
-                </div>
-                <div style={styles.progressBar}>
+              
+               <div slot="content">
+<div style={styles.progressBar}>
                   <div
                     style={{
                       ...styles.progress,
@@ -93,7 +94,10 @@ export default function StudentFrontPage({ opiskelijaId = 1 }) {
                     }}
                   ></div>
                 </div>
-              </button>
+</div>
+
+
+              </ds-card>
             );
           })}
         </div>
