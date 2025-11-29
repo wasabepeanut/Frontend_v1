@@ -1,4 +1,4 @@
-import React, { useState } from "react"; 
+import React, { useState } from "react";
 import { opiskelijat } from "../mockData/opiskelijat";
 import { kurssit } from "../mockData/kurssit";
 import { kurssiOsallistuminen } from "../mockData/osallistuminenKurssille";
@@ -37,7 +37,7 @@ export default function StudentFrontPage({ opiskelijaId = 1 }) {
               <div style={styles.topRight}>
                 {/* Uusi opiskelijan tiedot näkyviin */}
                 <div style={styles.studentInfo}>
-                  {opiskelija.etunimi} {opiskelija.sukunimi} {opiskelija.opiskelijanumero} 
+                  {opiskelija.etunimi} {opiskelija.sukunimi} {opiskelija.opiskelijanumero}
                 </div>
                 <span style={styles.filter}>Suodata: Kaikki</span>
                 <span style={styles.hamburger}>☰</span>
@@ -64,7 +64,7 @@ export default function StudentFrontPage({ opiskelijaId = 1 }) {
         </div>
 
         {/* Kurssit isona painikkeena */}
-      
+
         <div style={styles.itemContainer}>
           {kurssitOppilaalle.map((k) => {
             const edistyminen = Math.floor(
@@ -77,24 +77,24 @@ export default function StudentFrontPage({ opiskelijaId = 1 }) {
                   alert(`Siirryt suoritekortille: ${k.nimi}`)
                 }
 
-  ds-heading={k.kurssitunnus || ""} 
-  ds-eyebrow={k.nimi} 
-  ds-url="#" // nuoli symboli tulee tällä
-  ds-subtitle={`Edistyminen ${k.tehtavatValmiina || 0}/${k.tehtavatYhteensa || 0}`}
-  ds-tag="Kurssi"
-  ds-horizontal="false"
+                ds-heading={k.kurssitunnus || ""}
+                ds-eyebrow={k.nimi}
+                ds-url="#" // nuoli symboli tulee tällä
+                ds-subtitle={`Edistyminen ${k.tehtavatValmiina || 0}/${k.tehtavatYhteensa || 0}`}
+                ds-tag="Kurssi"
+                ds-horizontal="false"
               >
-              
-               <div slot="content">
-<div style={styles.progressBar}>
-                  <div
-                    style={{
-                      ...styles.progress,
-                      width: `${edistyminen}%`,
-                    }}
-                  ></div>
+
+                <div slot="content">
+                  <div style={styles.progressBar}>
+                    <div
+                      style={{
+                        ...styles.progress,
+                        width: `${edistyminen}%`,
+                      }}
+                    ></div>
+                  </div>
                 </div>
-</div>
 
 
               </ds-card>
