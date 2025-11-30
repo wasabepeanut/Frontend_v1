@@ -90,7 +90,7 @@ export default function TeacherStudentListPage() {
 
         {/* Hakukenttä */}
         <ds-text-input
-          style={{ width: "100%", marginBottom: "20px" }}
+          style={dsStyles.textInput}
           ds-placeholder="Hae opiskelijoita"
           ds-icon="search"
           value={query}

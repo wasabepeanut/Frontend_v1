@@ -41,6 +41,22 @@ export const dsStyles = {
         letterSpacing: '-0.4px',
         color: "#0c0c0c"   
     },
+    // ds-text-Large
+    labelText: {
+        fontFamily: '"Open Sans (400)", sans-serif',
+        fontSize: '18px',
+        lineHeight: '150%',
+        letterSpacing: '0px',
+        color: "#0c0c0c"
+    },
+    // ds-body-medium
+    bodyText: {
+        fontFamily: '"Open Sans (400)", sans-serif',
+        fontSize: '16px',
+        lineHeight: '150%',
+        letterSpacing: '0px',
+        color: "#0c0c0c"
+    },
 
 // COMPONENTS
     // button container
@@ -63,5 +79,16 @@ export const dsStyles = {
     progressBarFill: {
         background: "#005a94",
         height: "100%"
+    },
+    // text input
+    textInput: {
+        width: "100%",
+        marginBottom: "20px"
+    },
+    // small text input
+    smallTextInput: {
+        width: "70%",
+        marginBottom: "10px"
     }
+
 };

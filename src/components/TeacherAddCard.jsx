@@ -1,16 +1,17 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import logo from "../assets/logo.png";
+import { useNavigate, useParams } from "react-router-dom";
 import LayoutCard from "./LayoutCard";
 import { teacherAddCardStyles as styles } from "../styles/commonStyles";
+import { dsStyles } from "../styles/dsStyles";
+import { vuosikurssit } from "../mockData/vuosikurssit";
 
 function TeacherAddCard({ courseName }) {
-  const navigate = useNavigate();
   const [cards, setCards] = useState([]);
   const [newCardName, setNewCardName] = useState("");
   const [savedCards, setSavedCards] = useState([]);
+  const { yearId } = useParams();
 
-  // Lisää uusi kortti
+  // Lisää uusi kortti /TeacherCards
   const addCard = () => {
     if (!newCardName.trim()) return;
     setCards(prev => [
@@ -19,6 +20,10 @@ function TeacherAddCard({ courseName }) {
     ]);
     setNewCardName("");
   };
+
+  // Get year info for breadcrumbs
+  const year = vuosikurssit.find((y) => y.id === parseInt(yearId));
+
 
   const deleteCard = (index) => {
     const newCards = [...cards];
@@ -140,56 +145,135 @@ function TeacherAddCard({ courseName }) {
     setCards(newCards);
   };
 
+
+  // Renderöidään komponentti
   return (
     <div style={styles.app}>
       <LayoutCard
-        header={<img src={logo} alt="Logo" style={styles.logo} />}
-        footer={<p style={styles.alatunniste}>@Helsingin Yliopisto</p>}
+        header={
+          <div style={{ display: "flex", alignItems: "center", gap: "5px" }}>
+            <ds-icon
+              ds-name="ds_flame"
+              ds-size="4rem"
+              ds-colour="ds-palette-black-95"
+            />
+          </div>
+        }
+        footer={<p style={dsStyles.footer}>@Helsingin Yliopisto</p>}
       >
-        <button style={styles.backButton} onClick={() => navigate(-1)}>← Takaisin</button>
-        <h1 style={styles.appNameMini}>DigiDens</h1>
-        <p style={styles.subtitle}>
-          Tervetuloa opettajan suoritekorttinäkymään! <br />
-        </p>
-
-        <h2 style={styles.pageTitle}>Suoritekortit</h2>
-        {courseName && <div style={styles.courseNameHeader}>{courseName}</div>}
-        <p style={styles.subtitle2}>Luo ja hallinnoi tehtäväkortteja.</p>
-
-        <div style={styles.taskContainer}>
-          <input
-            type="text"
-            placeholder="Uuden kortin nimi"
-            value={newCardName}
-            onChange={(e) => setNewCardName(e.target.value)}
-            style={styles.input}
+        {/* Navigointipalkit */}
+        <div style={{ marginTop: "-10px", marginBottom: "30px" }}>
+          <ds-link ds-text="Kotisivu" ds-icon="chevron_forward" ds-weight="bold" ds-href="/" />
+          <ds-link ds-text="Lukuvuodet" ds-icon="chevron_forward" ds-weight="bold" ds-href="/teacherYears" />
+          {year && (
+            <ds-link
+              ds-text={year.nimi}
+              ds-icon="chevron_forward"
+              ds-weight="bold"
+              ds-href={`/teacherYears/${yearId}/teacherCourses`}
+            />
+          )}
+          <ds-link
+            ds-text="Kurssit"
+            ds-icon="chevron_forward"
+            ds-weight="bold"
+            ds-href={
+              yearId
+                ? `/teacherYears/${yearId}/teacherCourses`
+                : "/teacherCourses"
+            }
           />
-          <button style={styles.button} onClick={addCard}>Luo uusi suoritekortti</button>
+          <ds-link
+            ds-text="Ryhmät ja kortit"
+            ds-icon="chevron_forward"
+            ds-weight="bold"
+            ds-href={
+              yearId
+                ? `/teacherYears/${yearId}/teacherCourses/${courseName}`
+                : `/teacherCourses/${courseName}`
+            }
+          />
+          {courseName && (
+            <ds-link
+              ds-text="Suoritekorttien luonti"
+              ds-icon="chevron_forward"
+              ds-weight="bold"
+              ds-href={
+                yearId
+                  ? `/teacherYears/${yearId}/teacherCourses/${courseName}/teacherAddCards`
+                  : `/teacherCourses/${courseName}/teacherAddCards`
+              }
+            />
+          )}
+
+
         </div>
+
+        {/* Sivun otsikko */}
+        <h2 style={dsStyles.pageTitle}>Suoritekortit</h2>
+        <p style={dsStyles.subTitle}>Luo ja hallinnoi tehtäväkortteja.</p>
+
+        <ds-text-input 
+          style={dsStyles.textInput}
+          ds-placeholder="Uuden kortin nimi"
+          value={newCardName}
+          onChange={(e) => setNewCardName(e.target.value)}
+        />
+        <ds-button
+          onClick={addCard}
+          ds-value="Luo uusi suoritekortti"
+          ds-required="true"
+          ds-full-width="true"
+          ds-icon="edit"
+        >
+        </ds-button>
 
         <div style={styles.cardsContainer}>
           {cards.map((card, ci) => (
             <div key={ci} style={styles.cardItem}>
               <div style={styles.cardHeader}>
                 <h3>{card.name}</h3>
-                <button style={styles.deleteButton} onClick={() => deleteCard(ci)}>Poista kortti</button>
+                <ds-button
+                  style={{ marginLeft: "auto" }}
+                  ds-value="Poista kortti"
+                  ds-colour="black"
+                  ds-size="small"
+                  ds-icon="close"
+                  onClick={() => deleteCard(ci)}
+                />
               </div>
 
               <div style={styles.columnRow}>
-                <input
-                  type="text"
-                  placeholder="Uuden sarakkeen nimi"
+                <ds-text-input
+                  style={dsStyles.textInput}        
+                  ds-placeholder="Uuden sarakkeen nimi"
                   value={card.newColumnName || ""}
                   onChange={(e) => {
                     const newCards = [...cards];
                     newCards[ci].newColumnName = e.target.value;
                     setCards(newCards);
                   }}
-                  style={styles.input}
                 />
-                <button style={styles.smallButton} onClick={() => addColumn(ci)}>Lisää sarake</button>
-                <button style={styles.smallButton} onClick={() => addRow(ci)}>Lisää rivi</button>
-                <button style={styles.button} onClick={() => saveCard(ci)}>Tallenna suoritekortti</button>
+                <ds-button
+                  ds-value="Lisää sarake"
+                  ds-variant="secondary"
+                  ds-size="small"
+                  onClick={() => addColumn(ci)}
+                />
+                <ds-button
+                  ds-value="Lisää rivi"
+                  ds-variant="secondary"
+                  ds-size="small"
+                  onClick={() => addRow(ci)}
+                />
+                <ds-button
+                  style={{ marginLeft: "auto" }}
+                  ds-value="Tallenna suoritekortti"
+                  ds-variant="primary"
+                  ds-size="small"
+                  ds-icon="check"
+                  onClick={() => saveCard(ci)}
+                />
               </div>
 
               {card.columns.length > 0 && (
@@ -199,23 +283,26 @@ function TeacherAddCard({ courseName }) {
                       <tr>
                         {card.columns.map((col, colIndex) => (
                           <th key={colIndex} style={{ ...styles.tableHeader, width: "200px" }}>
-                            <div>Sarakkeen nimi</div>
-                            <input
-                              type="text"
+                            <div style={dsStyles.bodyText}>Sarakkeen nimi</div>
+                            <ds-text-input 
+                              style={dsStyles.textInput}
+                              ds-placeholder="Sarakkeen nimi"
                               value={col.name}
                               onChange={(e) => handleColumnNameChange(ci, colIndex, e.target.value)}
-                              style={styles.columnInput}
                             />
-                            <div>Kysymyksen tyyppi</div>
-                            <select
+                            <div style={dsStyles.bodyText}>Kysymyksen tyyppi</div>
+                            <ds-select 
+                              ds-label=""
+                              ds-placeholder="Valitse tyyppi"
+                              ds-clearable="false"
                               value={col.type}
                               onChange={(e) => handleColumnTypeChange(ci, colIndex, e.target.value)}
-                              style={styles.selectInput}
-                            >
-                              <option value="text">Teksti</option>
-                              <option value="checkbox">Checkbox</option>
-                              <option value="radio">Radio</option>
-                            </select>
+                              >
+                              <ds-option ds-value="text">Teksti</ds-option>
+                              <ds-option ds-value="checkbox">Checkbox</ds-option>
+                              <ds-option ds-value="radio">Radio</ds-option>
+                            </ds-select>
+                            
                             {col.type === "radio" && (
                               <>
                                 <div>Vastausvaihtoehdot</div>
@@ -228,15 +315,16 @@ function TeacherAddCard({ courseName }) {
                                 />
                               </>
                             )}
-                            <div>Vastaaja</div>
-                            <select
+                            <div style={dsStyles.bodyText}>Vastaaja</div>
+                            <ds-select
+                              ds-label=""
+                              ds-clearable="false"
                               value={col.responder}
                               onChange={(e) => handleResponderChange(ci, colIndex, e.target.value)}
-                              style={styles.selectInput}
                             >
-                              <option value="teacher">Opettaja</option>
-                              <option value="student">Oppilas</option>
-                            </select>
+                              <ds-option ds-value="teacher">Opettaja</ds-option>
+                              <ds-option ds-value="student">Oppilas</ds-option>
+                            </ds-select>
                           </th>
                         ))}
                         <th></th>
@@ -297,17 +385,19 @@ function TeacherAddCard({ courseName }) {
           {savedCards.map((card, ci) => (
             <div key={ci} style={styles.savedCard}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <h3 style={{ marginTop: "50px", marginBottom: "2px" }}>{card.name}</h3>
-                <button
-                  style={styles.deleteButton}
+                <h1 style={dsStyles.labelText}>{card.name}</h1>
+                <ds-button
+                  style={{ marginLeft: "auto" }}
+                  ds-value="Poista kortti"
+                  ds-colour="black"
+                  ds-size="small"
+                  ds-icon="close"
                   onClick={() => {
                     const newSaved = [...savedCards];
                     newSaved.splice(ci, 1);
                     setSavedCards(newSaved);
                   }}
-                >
-                  Poista <br /> kortti
-                </button>
+                />
               </div>
               {card.columns.length > 0 && (
                 <table style={{ ...styles.table, borderCollapse: "collapse", width: "100%" }}>

@@ -115,7 +115,7 @@ export default function TeacherGroupsPage() {
 
             {/* Hakukenttä*/}
             <ds-text-input
-              style={{ width: "100%", marginBottom: "20px" }}
+              style={dsStyles.textInput}
               ds-placeholder="Hae ryhmiä"
               ds-icon="search"
               value={query}
@@ -148,7 +148,7 @@ export default function TeacherGroupsPage() {
 
             {/* Hakukenttä EI TOIMINNALLINEN */}
             <ds-text-input
-              style={{ width: "100%", marginBottom: "20px" }}
+              style={dsStyles.textInput}
               ds-placeholder="Hae kortteja"
               ds-icon="search"
               value={query}
@@ -178,8 +178,8 @@ export default function TeacherGroupsPage() {
                 ds-full-width="true"
                 onClick={() => {
                   const route = yearId
-                    ? `/teacherYears/${yearId}/teacherCourses/${courseName}/teacherCards`
-                    : `/teacherCourses/${courseName}/teacherCards`;
+                    ? `/teacherYears/${yearId}/teacherCourses/${courseName}/teacherAddCards`
+                    : `/teacherCourses/${courseName}/teacherAddCards`;
                   navigate(route);
                 }}
               />

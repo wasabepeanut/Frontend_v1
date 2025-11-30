@@ -16,7 +16,7 @@ function App() {
         <Route path="/teacherYears" element={<TeacherYearsPage />} />
         <Route path="/teacherYears/:yearId/teacherCourses" element={<TeacherCoursesPage />} />
         <Route path="/teacherYears/:yearId/teacherCourses/:courseName" element={<TeacherGroupsPage />} />
-        <Route path="/teacherYears/:yearId/teacherCourses/:courseName/teacherCards" element={<TeacherAddCardPage />} />
+        <Route path="/teacherYears/:yearId/teacherCourses/:courseName/teacherAddCards" element={<TeacherAddCardPage />} />
         <Route path="/teacherYears/:yearId/teacherCourses/:courseName/group/:groupId" element={<TeacherStudentListPage />} />
         <Route path="/studentCourses" element={<StudentFrontPage />} />
       </Routes>

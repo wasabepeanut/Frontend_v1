@@ -69,7 +69,7 @@ function TeacherCoursesPage({ opiskelijaId = 1 }) {
 
         {/* Hakukenttä */}
         <ds-text-input
-          style={{ width: "100%", marginBottom: "20px" }}
+          style={dsStyles.textInput}
           ds-placeholder="Hae kurssia tai tunnusta"
           ds-icon="search"
           value={query}

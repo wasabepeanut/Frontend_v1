@@ -54,7 +54,7 @@ function TeacherYearsPage() {
 
         {/* Hakukenttä */}
         <ds-text-input
-          style={{ width: "100%", marginBottom: "20px" }}
+          style={dsStyles.textInput}
           ds-placeholder="Hae vuosikurssia tai kautta"
           ds-icon="search"
           value={query}                 
