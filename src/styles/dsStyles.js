@@ -1,4 +1,5 @@
 export const dsStyles = {
+// TEXT STYLES
     // ds-heading-small
     headerText: {
         fontFamily: '"Open Sans (600)", sans-serif',
@@ -32,13 +33,6 @@ export const dsStyles = {
         letterSpacing: '0px',
         color: "#808080",
     },
-    // button container
-    buttonContainer: {
-        display: "flex",
-        flexDirection: "column",
-        gap: "12px",
-        paddingTop: "180px",  // optional space above buttons
-    },
     // ds-heading-medium
     pageTitle: {
         fontFamily: '"Open Sans (600)", sans-serif',
@@ -46,5 +40,28 @@ export const dsStyles = {
         lineHeight: '24px',
         letterSpacing: '-0.4px',
         color: "#000000"   
+    },
+
+// COMPONENTS
+    // button container
+    buttonContainer: {
+        display: "flex",
+        flexDirection: "column",
+        gap: "12px",
+        paddingTop: "180px",  // optional space above buttons
+    },
+    // progress bar
+    progressBarContainer: {
+        marginLeft: "2%",
+        marginBottom: "10px",
+        width: "95%",
+        background: "#cccccc",
+        borderRadius: "6px",
+        height: "8px",
+        overflow: "hidden",
+    },
+    progressBarFill: {
+        background: "#005a94",
+        height: "100%"
     }
 };
