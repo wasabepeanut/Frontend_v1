@@ -1,4 +1,5 @@
 export const dsStyles = {
+    // ds-heading-small
     headerText: {
         fontFamily: '"Open Sans (600)", sans-serif',
         fontSize: '20px',
@@ -7,13 +8,15 @@ export const dsStyles = {
         color: "#000000",
         margin: "0",
     },
+    // ds-heading-xLarge
     siteTitle: {
         fontFamily: '"Open Sans (700)", sans-serif',
-        fontSize: '32px',
-        lineHeight: '36px',
+        fontSize: '48px',
+        lineHeight: '52px',
         letterSpacing: '-1.4px',
         color: "#000000"        
     },
+    // ds-bodyText-medium
     subTitle: {
         fontFamily: '"Open Sans (400)", sans-serif',
         fontSize: '16px',
@@ -21,6 +24,7 @@ export const dsStyles = {
         letterSpacing: '0px',
         color: "#808080",
     },
+    // ds-bodyText-medium
     footerText: {
         fontFamily: '"Open Sans (400)", sans-serif',
         fontSize: '16px',
@@ -28,10 +32,19 @@ export const dsStyles = {
         letterSpacing: '0px',
         color: "#808080",
     },
+    // button container
     buttonContainer: {
         display: "flex",
         flexDirection: "column",
         gap: "12px",
         paddingTop: "180px",  // optional space above buttons
+    },
+    // ds-heading-medium
+    pageTitle: {
+        fontFamily: '"Open Sans (600)", sans-serif',
+        fontSize: '20px',
+        lineHeight: '24px',
+        letterSpacing: '-0.4px',
+        color: "#000000"   
     }
 };

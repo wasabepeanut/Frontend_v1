@@ -1,5 +1,4 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
 import LayoutCard from "../components/LayoutCard";
 import { vuosikurssit } from "../mockData/vuosikurssit";
 import { kurssit } from "../mockData/kurssit";
@@ -7,60 +6,75 @@ import { styles } from "../styles/commonStyles";
 import { dsStyles } from "../styles/dsStyles";
 
 // Vuosivalikko (/teacherYears)
-
 function TeacherYearsPage() {
-  const navigate = useNavigate();
+  const [query, setQuery] = useState("");
 
   const getCourseCount = (yearId) => {
     return kurssit.filter((course) => course.vuosikurssiId === yearId).length;
   };
 
+  // Filter years based on search query (matches year name or season)
+  const filteredYears = vuosikurssit.filter((year) =>
+    year.nimi.toLowerCase().includes(query.toLowerCase()) ||
+    year.kausi.toLowerCase().includes(query.toLowerCase())
+  );
+
   return (
     <div style={styles.app}>
       <LayoutCard
         header={
-          <div style={{ display: "flex"}}>
+          <div style={{ display: "flex" }}>
             <ds-icon
               ds-name="ds_flame"
               ds-size="4rem"
               ds-colour="ds-palette-black"
-            >
-            </ds-icon>
-            </div>
+            ></ds-icon>
+          </div>
         }
-            footer={<p style={dsStyles.footer}>@Helsingin Yliopisto</p>}
+        footer={<p style={dsStyles.footer}>@Helsingin Yliopisto</p>}
       >
-            <button style={styles.backButton} onClick={() => navigate(-1)}>
-              ← Takaisin
-            </button>
+        {/* Navigaatiolinkit */}
+        <div style={{ marginTop: "-10px", marginBottom: "30px" }}>
+          <ds-link
+            ds-text="Kotisivu"
+            ds-icon="chevron_forward"
+            ds-weight="bold"
+            ds-href="/"
+          ></ds-link>
+          <ds-link
+            ds-text="Lukuvuodet"
+            ds-icon="chevron_forward"
+            ds-weight="bold"
+            ds-href="/teacherYears"
+          ></ds-link>
+        </div>
 
-            <h1 style={styles.appNameMini}>DigiDens</h1>
-            <p style={styles.subtitle}>Tervetuloa opettajan vuosinäkymään!</p>
+        {/* Sivun otsikko */}
+        <h1 style={dsStyles.pageTitle}>Lukuvuodet</h1>
 
-            <h2 style={styles.pageTitle}>Vuosivalikko</h2>
-            <p style={styles.subtitle2}>Valitse vuosi jatkaaksesi tehtävien hallintaan</p>
+        {/* Hakukenttä */}
+        <ds-text-input
+          style={{ width: "100%", marginBottom: "20px" }}
+          ds-placeholder="Hae vuosikurssia tai kautta"
+          ds-icon="search"
+          value={query}                 
+          onInput={(e) => setQuery(e.target.value)} 
+        ></ds-text-input>
 
-            <div style={styles.listContainer}>
-              <ul style={styles.listItems}>
-                {vuosikurssit.map((year) => (
-                  <li key={year.id} style={styles.listItem}>
-                    <button
-                      style={styles.primaryButton}
-                      onClick={() => navigate(`/teacherYears/${year.id}/teacherCourses`)}
-                    >
-                      <div style={{ fontWeight: "bold", marginBottom: "4px" }}>
-                        {year.kausi}
-                      </div>
-                      <div>{year.nimi}</div>
-                      <div style={{ fontWeight: "normal", fontSize: "0.9em", marginTop: "4px" }}>
-                        Kurssit: {getCourseCount(year.id)}
-                      </div>
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </LayoutCard>
+        {/* Vuosikortit */}
+        <div style={styles.listContainer}>
+          {filteredYears.map((year) => (
+            <ds-card
+              key={year.id}
+              ds-eyebrow={year.kausi}
+              ds-heading={year.nimi}
+              ds-subtitle={`Kurssit: ${getCourseCount(year.id)}`}
+              ds-url={`/teacherYears/${year.id}/teacherCourses`}
+              ds-url-target="_self"
+            ></ds-card>
+          ))}
+        </div>
+      </LayoutCard>
     </div>
   );
 }

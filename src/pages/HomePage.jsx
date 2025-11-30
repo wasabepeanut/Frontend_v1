@@ -27,32 +27,31 @@ function HomePage() {
         }
         footer={<p style={dsStyles.footerText}>@Helsingin Yliopisto</p>}
       >
-      {/* Content only */}
-      <div style={{ marginTop: "180px" }}>
-        <h1 style={dsStyles.siteTitle}>DigiDens</h1>
-      </div>
+        {/* Content only */}
+        <div style={{ marginTop: "180px" }}>
+          <h1 style={{ ...dsStyles.siteTitle, marginBottom: "10px" }}>DigiDens</h1>
+          <p style={{ ...dsStyles.subTitle, marginTop: "0px" }}>
+            Helsingin Yliopiston<br />Hammaslääketieteen oppimisympäristö
+          </p>
+        </div>
 
-      <p style={dsStyles.subTitle}>
-        Helsingin Yliopiston<br />Hammaslääketieteen oppimisympäristö
-      </p>
+        {/* Buttons */}
+        <div style={dsStyles.buttonContainer}>
+          <ds-button
+            onClick={() => navigate("/studentCourses")}
+            ds-value="Opiskelija"
+            ds-full-width="true"
+          ></ds-button>
 
-      {/* Buttons */}
-      <div style={dsStyles.buttonContainer}>
-        <ds-button
-          onClick={() => navigate("/studentCourses")}
-          ds-value="Opiskelija"
-          ds-full-width="true"
-        ></ds-button>
+          <ds-button
+            onClick={() => navigate("/teacherYears")}
+            ds-value="Opettaja"
+            ds-variant="secondary"
+            ds-full-width="true"
+          ></ds-button>
+        </div>
 
-        <ds-button
-          onClick={() => navigate("/teacherYears")}
-          ds-value="Opettaja"
-          ds-variant="secondary"
-          ds-full-width="true"
-        ></ds-button>
-      </div>
-
-    </LayoutCard>
+      </LayoutCard>
 
     </div >
   );
