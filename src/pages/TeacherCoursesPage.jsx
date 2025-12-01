@@ -67,6 +67,9 @@ function TeacherCoursesPage({ opiskelijaId = 1 }) {
           />
         </div>
 
+        {/* Sivun otsikko */}
+        <h1 style={dsStyles.pageTitle}>Kurssit</h1>
+
         {/* Hakukenttä */}
         <ds-text-input
           style={dsStyles.textInput}
@@ -75,10 +78,6 @@ function TeacherCoursesPage({ opiskelijaId = 1 }) {
           value={query}
           onInput={(e) => setQuery(e.target.value)}
         />
-
-
-        {/* Sivun otsikko */}
-        <h1 style={dsStyles.pageTitle}>Kurssit</h1>
 
         {/* Kurssikortit */}
         <div style={styles.listContainer}>
