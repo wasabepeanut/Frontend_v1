@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { opiskelijat } from "../mockData/opiskelijat";
 import { kurssit } from "../mockData/kurssit";
-import { kurssiOsallistuminen } from "../mockData/osallistuminenKurssille";
+import { kurssiOsallistuminen } from "../mockData/kurssiOsallistuminen";
 import { useNavigate } from "react-router-dom";
 import logo from "../assets/logo.png";
 import LayoutCard from "../components/LayoutCard";
@@ -17,7 +17,7 @@ export default function StudentFrontPage({ opiskelijaId = 1 }) {
     .sort((a, b) => a.nimi.localeCompare(b.nimi))
     .map((k) => {
       const osallistuminen = kurssiOsallistuminen.find(
-        (ko) => ko.kurssiId === k.id && ko.opiskelijaId === opiskelija.id
+        (ko) => ko.id === k.id && ko.opiskelijaId === opiskelija.id
       );
       return {
         ...k,

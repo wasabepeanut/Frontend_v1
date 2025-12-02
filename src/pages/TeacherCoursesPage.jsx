@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import LayoutCard from "../components/LayoutCard";
 import { kurssit } from "../mockData/kurssit";
 import { vuosikurssit } from "../mockData/vuosikurssit";
-import { kurssiOsallistuminen } from "../mockData/osallistuminenKurssille";
+import { kurssiOsallistuminen } from "../mockData/kurssiOsallistuminen";
 import { styles } from "../styles/commonStyles";
 import { dsStyles } from "../styles/dsStyles";
 
@@ -70,7 +70,7 @@ function TeacherCoursesPage({ opiskelijaId = 1 }) {
         <div style={styles.listContainer}>
           {filteredCourses.map((course) => {
             const osallistuminen = kurssiOsallistuminen.find(
-              (ko) => ko.kurssiId === course.id && ko.opiskelijaId === opiskelijaId
+              (ko) => ko.id === course.id && ko.opiskelijaId === opiskelijaId
             );
 
             const completed = osallistuminen?.tehtavatValmiina || 0;
