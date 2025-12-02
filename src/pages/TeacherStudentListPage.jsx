@@ -6,17 +6,23 @@ import { opiskelijat } from "../mockData/opiskelijat";
 import { dsStyles } from "../styles/dsStyles";
 import { vuosikurssit } from "../mockData/vuosikurssit";
 import { kurssit } from "../mockData/kurssit";
+import { kurssiOsallistuminen } from "../mockData/kurssiOsallistuminen";
 
 export default function TeacherStudentListPage() {
   const { courseId, yearId, groupId } = useParams();
+  const navigate = useNavigate();
   const [query, setQuery] = useState("");
 
-  // Opiskelijat tässä ryhmässä
+  // Breadcrumb data
+  const year = vuosikurssit.find((y) => y.id === parseInt(yearId));
+  const course = kurssit.find((c) => c.id === parseInt(courseId));
+
+  // Students belonging to this group
   const studentsInGroup = opiskelijat.filter(
-    (student) => student.ryhmaId === parseInt(groupId)
+    (s) => s.ryhmaId === parseInt(groupId)
   );
 
-  // Filteröinti hakukyselyn perusteella
+  // Filter by search
   const filteredStudents = studentsInGroup.filter((student) => {
     const q = query.toLowerCase();
     return (
@@ -25,12 +31,6 @@ export default function TeacherStudentListPage() {
       student.opiskelijanumero.toString().includes(q)
     );
   });
-
-  // Year for breadcrumbs
-  const year = vuosikurssit.find((y) => y.id === parseInt(yearId));
-
-  // Course for breadcrumbs
-  const course = kurssit.find((c) => c.id === parseInt(courseId));
 
   return (
     <div style={styles.app}>
@@ -46,9 +46,14 @@ export default function TeacherStudentListPage() {
         }
         footer={<p style={dsStyles.footer}>@Helsingin Yliopisto</p>}
       >
-        {/* Navigointipalkit */}
+        {/* Breadcrumbs */}
         <div style={{ marginTop: "-10px", marginBottom: "30px" }}>
-          <ds-link ds-text="Kotisivu" ds-icon="chevron_forward" ds-weight="bold" ds-href="/" />
+          <ds-link
+            ds-text="Kotisivu"
+            ds-icon="chevron_forward"
+            ds-weight="bold"
+            ds-href="/"
+          />
           {year && (
             <ds-link
               ds-text={year.nimi}
@@ -67,14 +72,16 @@ export default function TeacherStudentListPage() {
           )}
           <ds-link
             ds-text={`Ryhmä ${groupId}`}
+            ds-icon="chevron_forward"
             ds-weight="bold"
             ds-href={`/teacherYears/${yearId}/teacherCourses/${courseId}/groups`}
           />
         </div>
 
+        {/* Title */}
         <h1 style={dsStyles.pageTitle}>Ryhmä {groupId}: Opiskelijat</h1>
 
-        {/* Hakukenttä */}
+        {/* Search */}
         <ds-text-input
           style={dsStyles.textInput}
           ds-placeholder="Hae opiskelijoita"
@@ -83,22 +90,43 @@ export default function TeacherStudentListPage() {
           onInput={(e) => setQuery(e.target.value)}
         />
 
-        {/* Opiskelijalista */}
+        {/* Student list */}
         <div style={styles.itemContainer}>
-          {filteredStudents.map((student) => (
-            <ds-card
-              key={student.id}
-              onClick={() =>
-                alert(
-                  `Siirryt suoritekortille: ${student.etunimi} ${student.sukunimi}`
-                )
-              }
-              ds-eyebrow={student.opiskelijanumero}
-              ds-heading={`${student.etunimi} ${student.sukunimi}`}
-              ds-url="#"
-              ds-url-target="_self"
-            />
-          ))}
+          {filteredStudents.map((student) => {
+            // Student progress for THIS course
+            const osallistuminen = kurssiOsallistuminen.find(
+              (ko) =>
+                ko.opiskelijaId === student.id &&
+                ko.kurssiId === parseInt(courseId)
+            );
+
+            const completed = osallistuminen?.tehtavatValmiina || 0;
+            const total = osallistuminen?.tehtavatYhteensa || 0;
+            const progressPercent =
+              total > 0 ? Math.floor((completed / total) * 100) : 0;
+
+            return (
+              <ds-card
+                key={student.id}
+                ds-eyebrow={student.opiskelijanumero}
+                ds-heading={`${student.etunimi} ${student.sukunimi}`}
+                ds-url="#"
+                ds-url-target="_self"
+              >
+                {/* Progress bar */}
+                <div slot="content">
+                  <div style={dsStyles.progressBarContainer}>
+                    <div
+                      style={{
+                        ...dsStyles.progressBarFill,
+                        width: `${progressPercent}%`,
+                      }}
+                    />
+                  </div>
+                </div>
+              </ds-card>
+            );
+          })}
         </div>
       </LayoutCard>
     </div>
