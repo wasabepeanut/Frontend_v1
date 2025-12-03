@@ -79,11 +79,6 @@ function TeacherStudentTasksPage() {
                         ds-weight="bold"
                         ds-href={`/teacherYears/${yearId}/teacherCourses/${courseId}/groups/${groupId}`}
                     />
-                    <ds-link
-                        ds-text={course.nimi}
-                        ds-weight="bold"
-                        ds-href={`/teacherYears/${yearId}/teacherCourses/${courseId}/groups/${groupId}/studentDetails/${studentId}`}
-                    />
                 </div>
 
                 <h1 style={dsStyles.pageTitle}>Tehtävät</h1>
@@ -106,7 +101,7 @@ function TeacherStudentTasksPage() {
                             ds-eyebrow={task.pvm}
                             ds-heading={task.kuvaus}
                             ds-subtitle={`Tila: ${task.tila}`}
-                            ds-url="#"
+                            ds-url={`/teacherYears/${yearId}/teacherCourses/${courseId}/groups/${groupId}/${studentId}/studentTasks/${task.id}/teacherGradings`}
                             ds-url-target="_self"
                         >
                             <div

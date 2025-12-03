@@ -110,7 +110,7 @@ export default function TeacherStudentListPage() {
                 ds-eyebrow={student.opiskelijanumero}
                 ds-heading={`${student.etunimi} ${student.sukunimi}`}
                 ds-subtitle={`Edistyminen ${completed}/${total}`}
-                ds-url={`/teacherYears/${yearId}/teacherCourses/${courseId}/groups/${groupId}/studentDetails/${student.id}`}
+                ds-url={`/teacherYears/${yearId}/teacherCourses/${courseId}/groups/${groupId}/${student.id}/studentTasks`}
                 ds-url-target="_self"
               >
                 {/* Progress bar */}
