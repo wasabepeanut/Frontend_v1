@@ -69,6 +69,29 @@ function StudentTasksPage() {
                             ds-url="#"
                             ds-url-target="_self"
                         >
+                            <div
+                                slot="content"
+                                style={{
+                                    display: "flex",
+                                    justifyContent: "flex-end", // push icon to the right
+                                    marginTop: "-35px",
+                                    width: "100%",
+                                }}
+                            >
+                                <ds-icon
+                                    ds-size="1.5rem"
+                                    ds-name={task.tila === "Valmis" ? "check_circle_fill" : "check_circle"}
+                                    ds-colour={
+                                        task.tila === "Valmis"
+                                            ? "ds-palette-green-50"
+                                            : "ds-palette-black-50"
+                                    }
+                                    style={{
+                                        marginRight: "16px",  // move a little to the left
+                                        marginBottom: "5px",   // move a little up
+                                    }}
+                                />
+                            </div>
                         </ds-card>
                     ))}
                 </div>
