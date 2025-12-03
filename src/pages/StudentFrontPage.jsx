@@ -40,7 +40,18 @@ export default function StudentFrontPage({ opiskelijaId = 1 }) {
   return (
     <div style={styles.app}>
       <LayoutCard
-        header={<ds-icon ds-name="ds_flame" ds-size="4rem" ds-colour="ds-palette-black-95" />}
+
+        header={
+          <div style={{ display: "flex", alignItems: "center", gap: "5px" }}>
+            <ds-icon
+              ds-name="ds_flame"
+              ds-size="4rem"
+              ds-colour="ds-palette-black-95" />
+              <div>
+                <h2 style={{ ...dsStyles.pageTitle }}>Tervetuloa, {opiskelija.etunimi} {opiskelija.sukunimi}!</h2>
+              </div>
+          </div>
+        }
         footer={<p style={dsStyles.footer}>@Helsingin Yliopisto</p>}
       >
 
@@ -55,6 +66,8 @@ export default function StudentFrontPage({ opiskelijaId = 1 }) {
           <ds-button ds-value="Kariologia" ds-variant={activeView === "Kariologia" ? "primary" : "secondary"} onClick={() => setActiveView("Kariologia")} />
           <ds-button ds-value="Kirurgia" ds-variant={activeView === "Kirurgia" ? "primary" : "secondary"} onClick={() => setActiveView("Kirurgia")} />
         </div>
+
+        <h1 style={dsStyles.pageTitle}>Kurssit</h1>
 
         {/* Hakukenttä */}
         <ds-text-input

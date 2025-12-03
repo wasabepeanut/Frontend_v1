@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { act, useState } from "react";
 import { ryhmat } from "../mockData/ryhmat";
 import { opiskelijat } from "../mockData/opiskelijat";
 import { useNavigate, useParams } from "react-router-dom";
@@ -81,7 +81,7 @@ export default function TeacherGroupsPage() {
         <div style={{ display: "flex", gap: "15px" }}>
           <ds-button
             ds-value="Ryhmät"
-            ds-variant="secondary"
+            ds-variant={activeView === "groups" ? "primary" : "secondary"}
             onClick={() => {
               setQuery("");
               setActiveView("groups");
@@ -89,7 +89,7 @@ export default function TeacherGroupsPage() {
           />
           <ds-button
             ds-value="Kortit"
-            ds-variant="secondary"
+            ds-variant={activeView === "cards" ? "primary" : "secondary"}
             onClick={() => {
               setQuery("");
               setActiveView("cards");
