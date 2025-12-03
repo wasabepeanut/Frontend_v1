@@ -56,7 +56,7 @@ export default function StudentFrontPage({ opiskelijaId = 1 }) {
       >
 
         {/* Navigointipalkit */}
-        <div style={{ marginTop: -10, marginBottom: 30 }}>
+        <div style={{ marginTop: "-10px", marginBottom: "30px" }}>
           <ds-link ds-text="Kotisivu" ds-weight="bold" ds-href="/" />
         </div>
 
@@ -92,7 +92,7 @@ export default function StudentFrontPage({ opiskelijaId = 1 }) {
                   ds-eyebrow={k.kurssitunnus || ""}
                   ds-heading={k.nimi}
                   ds-subtitle={`Edistyminen ${completed}/${total}`}
-                  ds-url="#"
+                  ds-url={`/studentCourses/${k.id}/studentTasks`}
                   ds-url-target="_self"
                   ds-tag="Kurssi"
                 >
