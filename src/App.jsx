@@ -11,6 +11,7 @@ import TeacherGradings from "./pages/TeacherGradings";
 
 import StudentTasksPage from "./pages/StudentTasksPage";
 import StudentFrontPage from "./pages/StudentFrontPage";
+import StudentGradingsPage from "./pages/StudentGradingsPage";
 
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
         {/* Student routes */}
         <Route path="/studentCourses" element={<StudentFrontPage />} />
         <Route path="/studentCourses/:courseId/studentTasks" element={<StudentTasksPage />} />
+        <Route path="/studentCourses/:courseId/studentTasks/:taskId/studentGradings" element={<StudentGradingsPage />} />
 
       </Routes>
     </Router>

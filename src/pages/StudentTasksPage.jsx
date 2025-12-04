@@ -68,7 +68,7 @@ function StudentTasksPage() {
                             ds-eyebrow={task.pvm}
                             ds-heading={task.kuvaus}
                             ds-subtitle={`Tila: ${task.tila}`}
-                            ds-url="#"
+                            ds-url={`/studentCourses/${courseId}/studentTasks/${task.id}/studentGradings`}
                             ds-url-target="_self"
                         >
                             <div
