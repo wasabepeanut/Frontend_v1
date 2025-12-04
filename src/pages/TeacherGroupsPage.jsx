@@ -102,7 +102,7 @@ export default function TeacherGroupsPage() {
         {activeView === "groups" ? (
           <>
             <h1 style={dsStyles.pageTitle}>{course.kurssitunnus}: Ryhmät</h1>
-            <div style={{...commonStyles.divider, marginBottom: "15px"}}/>
+            <p style={commonStyles.divider}></p>
 
             {/* Hakukenttä*/}
             <ds-text-input
@@ -137,7 +137,7 @@ export default function TeacherGroupsPage() {
           <>
             {/* Korttinäkymä */}
             <h1 style={dsStyles.pageTitle}>{course.kurssitunnus}: Kortit</h1>
-            <div style={{...commonStyles.divider, marginBottom: "15px"}}/>
+            <p style={commonStyles.divider}></p>
 
             {/* Hakukenttä EI TOIMINNALLINEN */}
             <ds-text-input
@@ -163,7 +163,7 @@ export default function TeacherGroupsPage() {
               )}
             </div>
 
-              {/* Luo uusi kortti -painike */}
+            {/* Luo uusi kortti -painike */}
             <div style={{ ...dsStyles.buttonContainer, marginTop: "120px" }}>
               <ds-button
                 ds-value="Luo uusi kortti"
