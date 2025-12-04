@@ -1,5 +1,5 @@
 import LayoutCard from "../components/LayoutCard";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import React, { useState } from "react";
 import { styles } from "../styles/commonStyles";
 import { dsStyles } from "../styles/dsStyles";
@@ -14,6 +14,7 @@ import { styles as commonStyles } from "../styles/commonStyles";
 function TeacherGradings() {
     const [query, setQuery] = useState("");
     const [grade, setGrade] = useState(1);
+    const navigate = useNavigate();
     const { courseId, yearId, groupId, studentId, taskId } = useParams();
 
     // Year for breadcrumbs
@@ -119,6 +120,7 @@ function TeacherGradings() {
                     ds-variant="primary"
                 />
                 <ds-button
+                    onClick={() => navigate(`/teacherYears/${yearId}/teacherCourses/${courseId}/groups/${groupId}/${studentId}/studentTasks`)}
                     ds-value="Peruuta"
                     ds-variant="secondary"
                 />
