@@ -261,6 +261,7 @@ function TeacherAddCard({ courseId }) {
                 <ds-button
                   style={{ marginLeft: "auto" }}
                   ds-value="Poista kortti"
+                  ds-variant="secondary"
                   ds-colour="black"
                   ds-size="small"
                   ds-icon="close"
