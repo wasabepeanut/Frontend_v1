@@ -81,7 +81,7 @@ function StudentGradingsPage() {
                         {/* DIMMED, NON-EDITABLE SLIDER */}
                         <div style={{ pointerEvents: "none", cursor: "not-allowed" }}>
                             <GradeSlider
-                                value={arviointi.arvio}
+                                value={arviointi ? arviointi.arvio : 1}
                                 onChange={() => { }}
                             />
                         </div>
