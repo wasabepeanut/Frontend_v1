@@ -17,7 +17,6 @@ export default function GradeSlider({ value, onChange }) {
         style={{
           width: "100%",
           accentColor: "#005a94",
-          marginBottom: "10px",
         }}
       />
 

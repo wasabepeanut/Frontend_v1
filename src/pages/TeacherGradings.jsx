@@ -33,7 +33,7 @@ function TeacherGradings() {
                 </div>
             }
             footer={<p style={dsStyles.footer}>@Helsingin Yliopisto</p>}
-            
+
         >
 
             {/* Breadcrumbs */}
@@ -80,18 +80,51 @@ function TeacherGradings() {
             </div>
 
             <h1 style={dsStyles.pageTitle}>{task.kuvaus}</h1>
-            <p style={commonStyles.divider}/>
+            <p style={commonStyles.divider} />
 
             <div>
-                <h2 style={dsStyles.labelText}>Arviointi</h2>
-                <GradeSlider 
-                value={grade}
-                onChange={setGrade} />
+                <h2 style={dsStyles.labelText}>Arviointi:</h2>
+                <GradeSlider
+                    value={grade}
+                    onChange={setGrade} />
             </div>
 
-            
+            <ds-text-area
+                ds-full-width="true"
+            >
+            </ds-text-area>
 
-        </LayoutCard>
-    </div>;
+            <h2 style={dsStyles.labelText}>Suoritus:</h2>
+            <ds-radio-button-group>
+                <ds-radio-button
+                    ds-text="Hyväksytty"
+                    ds-value="accepted"
+                    ds-checked={true}
+                />
+                <ds-radio-button
+                    ds-text="Kesken"
+                    ds-value="pending"
+                    ds-checked={false}
+                />
+                <ds-radio-button
+                    ds-text="Hylätty"
+                    ds-value="rejected"
+                    ds-checked={false}
+                />
+            </ds-radio-button-group>
+
+            <div style={{...dsStyles.buttonContainer, marginTop: "-160px"}}>
+                <ds-button
+                    ds-value="Tallenna"
+                    ds-variant="primary"
+                />
+                <ds-button
+                    ds-value="Peruuta"
+                    ds-variant="secondary"
+                />
+            </div>
+
+        </LayoutCard >
+    </div >;
 }
 export default TeacherGradings;
