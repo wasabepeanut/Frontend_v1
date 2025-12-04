@@ -8,7 +8,7 @@ import { kurssit } from "../mockData/kurssit";
 import { tehtavat } from "../mockData/tehtavat";
 import GradeSlider from "../components/GradeSlider";
 import { styles as commonStyles } from "../styles/commonStyles";
-
+import { opiskelijat } from "../mockData/opiskelijat";
 
 
 function TeacherGradings() {
@@ -21,6 +21,7 @@ function TeacherGradings() {
     const year = vuosikurssit.find((y) => y.id === parseInt(yearId));
     const course = kurssit.find((c) => c.id === parseInt(courseId));
     const task = tehtavat.find((t) => t.id === parseInt(taskId));
+    const student = opiskelijat.find((s) => s.id === parseInt(studentId));
 
 
     return <div style={styles.app}>
@@ -68,7 +69,7 @@ function TeacherGradings() {
                     ds-href={`/teacherYears/${yearId}/teacherCourses/${courseId}/groups`}
                 />
                 <ds-link
-                    ds-text={`Opiskelijat`}
+                    ds-text={student.sukunimi + " " + student.etunimi}
                     ds-icon="chevron_forward"
                     ds-weight="bold"
                     ds-href={`/teacherYears/${yearId}/teacherCourses/${courseId}/groups/${groupId}`}

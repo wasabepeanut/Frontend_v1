@@ -67,32 +67,18 @@ function StudentTasksPage() {
                             key={task.id}
                             ds-eyebrow={task.pvm}
                             ds-heading={task.kuvaus}
-                            ds-subtitle={`Tila: ${task.tila}`}
                             ds-url={`/studentCourses/${courseId}/studentTasks/${task.id}/studentGradings`}
                             ds-url-target="_self"
+
                         >
-                            <div
-                                slot="content"
-                                style={{
-                                    display: "flex",
-                                    justifyContent: "flex-end", // push icon to the right
-                                    marginTop: "-35px",
-                                    width: "100%",
-                                }}
-                            >
-                                <ds-icon
-                                    ds-size="1.5rem"
-                                    ds-name={task.tila === "Valmis" ? "check_circle_fill" : "check_circle"}
-                                    ds-colour={
-                                        task.tila === "Valmis"
-                                            ? "ds-palette-green-50"
-                                            : "ds-palette-black-50"
-                                    }
-                                    style={{
-                                        marginRight: "16px",  // move a little to the left
-                                        marginBottom: "5px",   // move a little up
-                                    }}
-                                />
+                            <div slot="content">
+                                <div style={{ margin: "-0.2rem 1rem 1rem 1rem" }}>
+                                    <ds-tag
+                                        ds-colour={task.tila === "Valmis" ? "success" : task.tila === "Kesken" ? "attention" : "danger"}
+                                    >
+                                        {task.tila}
+                                    </ds-tag>
+                                </div>
                             </div>
                         </ds-card>
                     ))}

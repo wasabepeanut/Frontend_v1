@@ -17,6 +17,7 @@ function TeacherStudentTasksPage() {
     // Year for breadcrumbs
     const year = vuosikurssit.find((y) => y.id === parseInt(yearId));
     const course = kurssit.find((c) => c.id === parseInt(courseId));
+    const student = opiskelijat.find((s) => s.id === parseInt(studentId));
 
     const q = query.trim().toLowerCase();
     const filteredTasks = tehtavat.filter((t) => {
@@ -75,7 +76,7 @@ function TeacherStudentTasksPage() {
                         ds-href={`/teacherYears/${yearId}/teacherCourses/${courseId}/groups`}
                     />
                     <ds-link
-                        ds-text={`Opiskelijat`}
+                        ds-text={student.sukunimi + " " + student.etunimi}
                         ds-icon="chevron_forward"
                         ds-weight="bold"
                         ds-href={`/teacherYears/${yearId}/teacherCourses/${courseId}/groups/${groupId}`}
@@ -83,7 +84,7 @@ function TeacherStudentTasksPage() {
                 </div>
 
                 <h1 style={dsStyles.pageTitle}>Tehtävät</h1>
-                <p style={commonStyles.divider}/>
+                <p style={commonStyles.divider} />
 
                 {/* Hakukenttä */}
                 <ds-text-input
@@ -102,32 +103,18 @@ function TeacherStudentTasksPage() {
                             key={task.id}
                             ds-eyebrow={task.pvm}
                             ds-heading={task.kuvaus}
-                            ds-subtitle={`Tila: ${task.tila}`}
                             ds-url={`/teacherYears/${yearId}/teacherCourses/${courseId}/groups/${groupId}/${studentId}/studentTasks/${task.id}/teacherGradings`}
                             ds-url-target="_self"
                         >
-                            <div
-                                slot="content"
-                                style={{
-                                    display: "flex",
-                                    justifyContent: "flex-end", // push icon to the right
-                                    marginTop: "-35px",
-                                    width: "100%",
-                                }}
-                            >
-                                <ds-icon
-                                    ds-size="1.5rem"
-                                    ds-name={task.tila === "Valmis" ? "check_circle_fill" : "check_circle"}
-                                    ds-colour={
-                                        task.tila === "Valmis"
-                                            ? "ds-palette-green-50"
-                                            : "ds-palette-black-50"
-                                    }
-                                    style={{
-                                        marginRight: "16px",  // move a little to the left
-                                        marginBottom: "5px",   // move a little up
-                                    }}
-                                />
+
+                            <div slot="content">
+                                <div style={{ margin: "-0.2rem 1rem 1rem 1rem" }}>
+                                    <ds-tag
+                                        ds-colour={task.tila === "Valmis" ? "success" : task.tila === "Kesken" ? "attention" : "danger"}
+                                    >
+                                        {task.tila}
+                                    </ds-tag>
+                                </div>
                             </div>
                         </ds-card>
                     ))}

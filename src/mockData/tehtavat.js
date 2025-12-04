@@ -12,14 +12,14 @@ export const tehtavat = [
         kurssiId: 1,
         kuvaus: "IRM:n/Li purkaminen",
         pvm: "23.8.2025",
-        tila: "Valmis"
+        tila: "Kesken"
     },
     {
         id: 3,
         kurssiId: 1,
         kuvaus: "Sidostaminen",
         pvm: "14.11.2025",
-        tila: "Kesken"
+        tila: "Hylätty"
     },
 
     // Hammaslääketieteen perusteet - kurssin tehtävät
