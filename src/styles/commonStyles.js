@@ -24,7 +24,7 @@ export const styles = {
     padding: "30px 40px 20px 30px",
   },
   divider: {
-    height: "1px",
+    height: "0.1rem",
     backgroundColor: "#000000ff",
     width: "100%",
   },

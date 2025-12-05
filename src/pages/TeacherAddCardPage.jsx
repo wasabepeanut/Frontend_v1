@@ -3,11 +3,11 @@ import { useParams, useNavigate } from "react-router-dom";
 import TeacherAddCard from "../components/TeacherAddCard";
 
 function TeacherAddCardPage() {
-  const { courseName } = useParams();
+  const { courseId } = useParams();
 
   return (
     <TeacherAddCard
-      courseName={courseName}
+      courseId={courseId}
     />
   );
 }

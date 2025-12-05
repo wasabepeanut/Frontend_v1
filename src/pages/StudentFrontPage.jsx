@@ -1,119 +1,113 @@
 import React, { useState } from "react";
 import { opiskelijat } from "../mockData/opiskelijat";
 import { kurssit } from "../mockData/kurssit";
-import { kurssiOsallistuminen } from "../mockData/osallistuminenKurssille";
-import { useNavigate } from "react-router-dom";
-import logo from "../assets/logo.png";
+import { kurssiOsallistuminen } from "../mockData/kurssiOsallistuminen";
 import LayoutCard from "../components/LayoutCard";
 import { studentFrontStyles as styles } from "../styles/commonStyles";
+import { dsStyles } from "../styles/dsStyles";
+import { styles as commonStyles } from "../styles/commonStyles";
 
 export default function StudentFrontPage({ opiskelijaId = 1 }) {
-  const navigate = useNavigate();
-  const opiskelija = opiskelijat.find((o) => o.id === opiskelijaId);
+  const opiskelija = opiskelijat.find((o) => o.id === opiskelijaId) || {};
+  const [query, setQuery] = useState("");
+  const [activeView, setActiveView] = useState("Kaikki");
 
-  // Kurssit navigointipalkkiin aakkosjärjestyksessä
   const kurssitOppilaalle = kurssit
     .filter((k) => k.vuosikurssiId === opiskelija.vuosikurssiId)
-    .sort((a, b) => a.nimi.localeCompare(b.nimi))
+    .filter((k) => {
+      if (activeView === "Kaikki") return true;
+      return k.nimi.toLowerCase().includes(activeView.toLowerCase());
+    })
+    .filter((k) => {
+      const q = query.trim().toLowerCase();
+      if (!q) return true;
+      return (
+        k.nimi.toLowerCase().includes(q) ||
+        (k.kurssitunnus || "").toLowerCase().includes(q)
+      );
+    })
+    .sort((a, b) => a.id - b.id)
     .map((k) => {
       const osallistuminen = kurssiOsallistuminen.find(
-        (ko) => ko.kurssiId === k.id && ko.opiskelijaId === opiskelija.id
-      );
+        (ko) => ko.id === k.id && ko.opiskelijaId === opiskelija.id
+      ) || {};
       return {
         ...k,
-        tila: osallistuminen?.tila || "kesken",
-        tehtavatValmiina: osallistuminen?.tehtavatValmiina || 0,
-        tehtavatYhteensa: osallistuminen?.tehtavatYhteensa || 0,
+        tehtavatValmiina: osallistuminen.tehtavatValmiina || 0,
+        tehtavatYhteensa: osallistuminen.tehtavatYhteensa || 0,
       };
     });
 
   return (
     <div style={styles.app}>
       <LayoutCard
+
         header={
-          <>
-            <div style={styles.headerRow}>
-              <img src={logo} alt="Logo" style={styles.logo} />
-              <div style={styles.topRight}>
-                {/* Uusi opiskelijan tiedot näkyviin */}
-                <div style={styles.studentInfo}>
-                  {opiskelija.etunimi} {opiskelija.sukunimi} {opiskelija.opiskelijanumero}
-                </div>
-                <span style={styles.filter}>Suodata: Kaikki</span>
-                <span style={styles.hamburger}>☰</span>
-              </div>
+          <div style={{ display: "flex", alignItems: "center", gap: "5px" }}>
+            <ds-icon
+              ds-name="ds_flame"
+              ds-size="4rem"
+              ds-colour="ds-palette-black-95" />
+            <div>
+              <h2 style={{ ...dsStyles.pageTitle }}>Tervetuloa, {opiskelija.etunimi} {opiskelija.sukunimi}!</h2>
             </div>
-          </>
+          </div>
         }
-        dividerStyle={{ backgroundColor: "#00000022" }}
-        contentStyle={{ padding: "15px 30px" }}
-        footer={<p style={styles.footerText}>@Helsingin Yliopisto</p>}
+        footer={<p style={dsStyles.footer}>@Helsingin Yliopisto</p>}
       >
 
-
-        {/* Takaisin-painike */}
-        <ds-button onClick={() => navigate(-1)}
-  ds-size="small"
-  ds-value="Takaisin"
-  ds-variant="secondary"
-  ds-icon-position="start"
-  ds-icon="arrow-back"
-></ds-button>
-
-
-
-        {/* Kurssinavigointipalkki */}
-        <div style={styles.navBar}>
-          {kurssitOppilaalle.map((k) => (
-            <ds-button key={k.id} 
-            ds-size="small"
-            ds-value={k.nimi}
-            ds-variant="primary"
-            ></ds-button>
-          ))}
+        {/* Navigointipalkit */}
+        <div style={{ marginTop: "-10px", marginBottom: "30px" }}>
+          <ds-link ds-text="Kotisivu" ds-weight="bold" ds-href="/" />
         </div>
 
+        {/* Näkymän vaihto painikkeet */}
+        <div style={{ display: "flex", gap: 12, marginBottom: 12 }}>
+          <ds-button ds-value="Kaikki" ds-variant={activeView === "Kaikki" ? "primary" : "secondary"} onClick={() => setActiveView("Kaikki")} />
+          <ds-button ds-value="Kariologia" ds-variant={activeView === "Kariologia" ? "primary" : "secondary"} onClick={() => setActiveView("Kariologia")} />
+          <ds-button ds-value="Kirurgia" ds-variant={activeView === "Kirurgia" ? "primary" : "secondary"} onClick={() => setActiveView("Kirurgia")} />
+        </div>
+
+        <h1 style={dsStyles.pageTitle}>Kurssit</h1>
+        <p style={commonStyles.divider}></p>
 
 
-
-
-        {/* Kurssit isona painikkeena */}
-
+        {/* Hakukenttä */}
+        <ds-text-input
+          style={dsStyles.textInput}
+          ds-placeholder="Hae kurssia tai tunnusta"
+          ds-icon="search"
+          value={query}
+          onInput={(e) => setQuery(e.target.value)}
+        />
+        {/* Näkymät */}
         <div style={styles.itemContainer}>
-          {kurssitOppilaalle.map((k) => {
-            const edistyminen = Math.floor(
-              (k.tehtavatValmiina / k.tehtavatYhteensa) * 100
-            );
-            return (
-              <ds-card
-                key={k.id}
-                onClick={() =>
-                  alert(`Siirryt suoritekortille: ${k.nimi}`)
-                }
-
-                ds-heading={k.kurssitunnus || ""}
-                ds-eyebrow={k.nimi}
-                ds-url="#" // nuoli symboli tulee tällä
-                ds-subtitle={`Edistyminen ${k.tehtavatValmiina || 0}/${k.tehtavatYhteensa || 0}`}
-                ds-tag="Kurssi"
-                ds-horizontal="false"
-              >
-
-                <div slot="content">
-                  <div style={styles.progressBar}>
-                    <div
-                      style={{
-                        ...styles.progress,
-                        width: `${edistyminen}%`,
-                      }}
-                    ></div>
+          {kurssitOppilaalle.length === 0 ? (
+            <p>Ei tuloksia.</p>
+          ) : (
+            kurssitOppilaalle.map((k) => {
+              const completed = k.tehtavatValmiina || 0;
+              const total = k.tehtavatYhteensa || 0;
+              const progressPercent = total > 0 ? Math.floor((completed / total) * 100) : 0;
+              return (
+                <ds-card
+                  key={k.id}
+                  ds-eyebrow={k.kurssitunnus || ""}
+                  ds-heading={k.nimi}
+                  ds-subtitle={`Edistyminen ${completed}/${total}`}
+                  ds-url={`/studentCourses/${k.id}/studentTasks`}
+                  ds-url-target="_self"
+                  ds-tag="Kurssi"
+                >
+                  <div slot="content" style={{ marginBottom: 5 }}>
+                    <div style={dsStyles.progressBarContainer}>
+                      <div style={{ ...dsStyles.progressBarFill, width: `${progressPercent}%` }} />
+                    </div>
                   </div>
-                </div>
-
-
-              </ds-card>
-            );
-          })}
+                </ds-card>
+              );
+            })
+          )}
         </div>
       </LayoutCard>
     </div>

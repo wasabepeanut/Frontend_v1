@@ -3,9 +3,10 @@ import { useParams } from "react-router-dom";
 import LayoutCard from "../components/LayoutCard";
 import { kurssit } from "../mockData/kurssit";
 import { vuosikurssit } from "../mockData/vuosikurssit";
-import { kurssiOsallistuminen } from "../mockData/osallistuminenKurssille";
+import { kurssiOsallistuminen } from "../mockData/kurssiOsallistuminen";
 import { styles } from "../styles/commonStyles";
 import { dsStyles } from "../styles/dsStyles";
+import { styles as commonStyles } from "../styles/commonStyles";
 
 function TeacherCoursesPage({ opiskelijaId = 1 }) {
   const { yearId } = useParams();
@@ -45,27 +46,18 @@ function TeacherCoursesPage({ opiskelijaId = 1 }) {
             ds-weight="bold"
             ds-href="/"
           />
-          <ds-link
-            ds-text="Lukuvuodet"
-            ds-icon="chevron_forward"
-            ds-weight="bold"
-            ds-href="/teacherYears"
-          />
           {year && (
             <ds-link
               ds-text={year.nimi}
-              ds-icon="chevron_forward"
               ds-weight="bold"
-              ds-href={`/teacherYears/${yearId}/teacherCourses`}
+              ds-href={`/teacherYears`}
             />
           )}
-          <ds-link
-            ds-text="Kurssit"
-            ds-icon="chevron_forward"
-            ds-weight="bold"
-            ds-href={yearId ? `/teacherYears/${yearId}/teacherCourses` : "/teacherCourses"}
-          />
         </div>
+
+        {/* Sivun otsikko */}
+        <h1 style={dsStyles.pageTitle}>Kurssit</h1>
+        <p style={commonStyles.divider}></p>
 
         {/* Hakukenttä */}
         <ds-text-input
@@ -77,27 +69,25 @@ function TeacherCoursesPage({ opiskelijaId = 1 }) {
         />
 
 
-        {/* Sivun otsikko */}
-        <h1 style={dsStyles.pageTitle}>Kurssit</h1>
-
-        {/* Kurssikortit */}
+        {/* Kurssien ja kurssitunnusten haku */}
         <div style={styles.listContainer}>
           {filteredCourses.map((course) => {
             const osallistuminen = kurssiOsallistuminen.find(
-              (ko) => ko.kurssiId === course.id && ko.opiskelijaId === opiskelijaId
+              (ko) => ko.id === course.id && ko.opiskelijaId === opiskelijaId
             );
 
             const completed = osallistuminen?.tehtavatValmiina || 0;
             const total = osallistuminen?.tehtavatYhteensa || 0;
             const progressPercent = total > 0 ? Math.floor((completed / total) * 100) : 0;
 
+            {/* Kurssikortit */ }
             return (
               <ds-card
                 key={course.id}
-                ds-eyebrow={course.nimi}
-                ds-heading={course.kurssitunnus || ""}
+                ds-eyebrow={course.kurssitunnus || ""}
+                ds-heading={course.nimi}
                 ds-subtitle={`Edistyminen ${completed}/${total}`}
-                ds-url={yearId ? `/teacherYears/${yearId}/teacherCourses/${course.kurssitunnus}` : `/teacherCourses/${course.kurssitunnus}`}
+                ds-url={yearId ? `/teacherYears/${yearId}/teacherCourses/${course.id}/groups` : `/teacherCourses/${course.id}/groups`}
                 ds-url-target="_self"
                 ds-tag="Kurssi"
               >

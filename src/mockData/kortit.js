@@ -1,4 +1,4 @@
-export const suoritekortti = {
+export const kortit = {
   kortinNimi: "H1 Kasvot suu hampaat Morfologia",
   suoritteet: "Kevät 2025",
   sarakkeet: ["Päivämäärä", "Tehtävän nimi", "Itsearvio", "Open kuittaus"],
