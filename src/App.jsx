@@ -9,6 +9,7 @@ import TeacherStudentListPage from "./pages/TeacherStudentListPage";
 import TeacherStudentTasksPage from "./pages/TeacherStudentTasksPage";
 import TeacherGradings from "./pages/TeacherGradings";
 import TeacherCreateCardsPage from "./pages/TeacherCreateCardsPage";
+import TeacherAddComponentPage from "./pages/TeacherAddComponentPage";
 
 import StudentTasksPage from "./pages/StudentTasksPage";
 import StudentFrontPage from "./pages/StudentFrontPage";
@@ -26,6 +27,7 @@ function App() {
         <Route path="/teacherYears/:yearId/teacherCourses" element={<TeacherCoursesPage />} />
         <Route path="/teacherYears/:yearId/teacherCourses/:courseId/groups" element={<TeacherGroupsPage />} />
         <Route path="/teacherYears/:yearId/teacherCourses/:courseId/groups/teacherCreateCards" element={<TeacherCreateCardsPage />} />
+        <Route path="/teacherYears/:yearId/teacherCourses/:courseId/groups/teacherCreateCards/teacherAddComponent" element={<TeacherAddComponentPage />} />
         <Route path="/teacherYears/:yearId/teacherCourses/:courseId/groups/:groupId" element={<TeacherStudentListPage />} />
         <Route path="/teacherYears/:yearId/teacherCourses/:courseId/groups/:groupId/:studentId/studentTasks" element={<TeacherStudentTasksPage />} />
         <Route path="/teacherYears/:yearId/teacherCourses/:courseId/groups/:groupId/:studentId/studentTasks/:taskId/teacherGradings" element={<TeacherGradings />} />
