@@ -12,6 +12,7 @@ import { styles as commonStyles } from "../styles/commonStyles";
 export default function TeacherStudentListPage() {
   const { courseId, yearId, groupId } = useParams();
   const [query, setQuery] = useState("");
+  const [currentPage, setCurrentPage] = useState(0);
 
   // Breadcrumb data
   const year = vuosikurssit.find((y) => y.id === parseInt(yearId));
@@ -31,6 +32,12 @@ export default function TeacherStudentListPage() {
       student.opiskelijanumero.toString().includes(q)
     );
   });
+
+  // Pagination for students (3 per page)
+  const studentsPerPage = 3;
+  const totalPages = Math.ceil(filteredStudents.length / studentsPerPage);
+  const startIdx = currentPage * studentsPerPage;
+  const paginatedStudents = filteredStudents.slice(startIdx, startIdx + studentsPerPage);
 
   return (
     <div style={styles.app}>
@@ -88,12 +95,15 @@ export default function TeacherStudentListPage() {
           ds-placeholder="Hae opiskelijoita"
           ds-icon="search"
           value={query}
-          onInput={(e) => setQuery(e.target.value)}
+          onInput={(e) => {
+            setQuery(e.target.value);
+            setCurrentPage(0);
+          }}
         />
 
         {/* Student list */}
         <div style={styles.itemContainer}>
-          {filteredStudents.map((student) => {
+          {paginatedStudents.map((student) => {
             // Student progress for THIS course
             const osallistuminen = kurssiOsallistuminen.find(
               (ko) =>
@@ -130,6 +140,27 @@ export default function TeacherStudentListPage() {
             );
           })}
         </div>
+
+        {/* Pagination controls */}
+        {totalPages > 1 && (
+          <div style={{ display: "flex", gap: "10px", justifyContent: "center" }}>
+            <ds-button
+              ds-value="<"
+              ds-variant="supplementary"
+              onClick={() => setCurrentPage(Math.max(0, currentPage - 1))}
+              disabled={currentPage === 0}
+            />
+            <span style={{ ...dsStyles.bodyText, alignSelf: "center" }}>
+              Sivu {currentPage + 1} / {totalPages}
+            </span>
+            <ds-button
+              ds-value=">"
+              ds-variant="supplementary"
+              onClick={() => setCurrentPage(Math.min(totalPages - 1, currentPage + 1))}
+              disabled={currentPage === totalPages - 1}
+            />
+          </div>
+        )}
       </LayoutCard>
     </div>
   );
