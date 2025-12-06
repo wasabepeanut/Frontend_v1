@@ -231,7 +231,7 @@ function TeacherAddCard({ courseId }) {
           />
         </div>
 
-        <h2 style={dsStyles.pageTitle}>Suoritekortit</h2>
+        <h2 style={dsStyles.pageTitle}>Uuden kortin luonti</h2>
         <p style={commonStyles.divider}></p>
         <p style={dsStyles.subTitle}>Luo ja hallinnoi tehtäväkortteja.</p>
 
