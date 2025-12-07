@@ -1,4 +1,3 @@
-import React from "react";
 import { useNavigate } from "react-router-dom";
 import LayoutCard from "../components/LayoutCard";
 import { styles } from "../styles/commonStyles";
